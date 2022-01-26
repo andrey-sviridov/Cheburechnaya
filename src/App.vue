@@ -4,6 +4,7 @@
                 <v-app-bar
                     id="appBarNav"
                     class="appBar"
+                    style="z-index: 1"
                 >
                     <v-tabs>
                         <v-spacer></v-spacer>
@@ -99,23 +100,12 @@
         background: transparent !important;
         box-shadow: none !important;
         backdrop-filter: blur(2px);
-        color: red !important;
-    }
-    .v-tab{
-        color: white !important;
-    }
-    .v-tabs-slider{
-        color: red !important;
     }
     .router-div{
     }
     .router-view{
-        position: absolute;
-    }
-    .nav{
-        padding: 20px;
-        grid-column: 3;
-        text-align: center;
+        position: fixed;
+        width: 80%;
     }
 
         /*Реализация плавного перехода*/
