@@ -7,7 +7,12 @@
                     style="z-index: 1"
                 >
                     <v-tabs>
-                        <v-spacer></v-spacer>
+                        <v-img src="../src/assets/logo.png" style="width: 70px; position:absolute;"></v-img>
+                        <div style="position:absolute; top: 33%; color: white; margin-left: 80px;">
+                            ЧЕБУРЕЧНАЯ НА ЗАКАТЕ
+                        </div>
+                        <v-spacer>
+                        </v-spacer>
                             <v-tab @click="$router.push({name: 'Main'})">Главная</v-tab>
                             <v-tab @click="$router.push({name: 'About'})">Биография</v-tab>
                             <v-tab @click="$router.push({name: 'Info'})">Информация</v-tab>
