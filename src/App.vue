@@ -6,11 +6,16 @@
                     class="appBar"
                     style="z-index: 1"
                 >
-                    <v-tabs>
-                        <v-img src="../src/assets/logo.png" style="width: 70px; position:absolute;"></v-img>
-                        <div style="position:absolute; top: 33%; color: white; margin-left: 80px;">
+                    <div
+                        style=" position:absolute; width: auto; cursor: pointer; z-index: 1"
+                        @click="$router.push({name: 'Main'})"
+                    >
+                        <v-img src="../src/assets/logo.png" style="width: 70px;" />
+                        <span style="position:absolute; top: 33%; color: white; margin-left: 80px; width: 200px">
                             ЧЕБУРЕЧНАЯ НА ЗАКАТЕ
-                        </div>
+                        </span>
+                    </div>
+                    <v-tabs>
                         <v-spacer>
                         </v-spacer>
                             <v-tab @click="$router.push({name: 'Main'})">Главная</v-tab>
@@ -109,25 +114,23 @@
     .router-div{
     }
     .router-view{
-        position: fixed;
-        width: 80%;
     }
 
         /*Реализация плавного перехода*/
 
     /*Анимация при появлении*/
     .fade-enter-active {
-        animation: inPage .3s;
+        animation: inPage .5s;
     }
 
     /*Анимация при исчезании*/
     .fade-leave-active {
-        animation: outPage .3s;
+        animation: outPage .2s;
     }
 
     @keyframes inPage {
         from {
-            transform: translateY(-100%);
+            transform: translateY(100%);
             opacity: 0;
         }
         to {
@@ -150,7 +153,6 @@
     body{
         padding: 0 10% 5% 10%;
     }
-
 </style>
 
 
