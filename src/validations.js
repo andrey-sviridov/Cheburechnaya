@@ -1,0 +1,1 @@
+export const required = value => (value && value.length ? true : 'Данное поле является обязательным')

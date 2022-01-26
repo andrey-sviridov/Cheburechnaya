@@ -1,0 +1,10 @@
+
+.v-btn{
+    margin-left: 20px;
+}
+.v-btn:not(.v-btn--round){
+    background: transparent !important;
+    backdrop-filter: blur(3px) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    box-shadow: none !important;
+}
