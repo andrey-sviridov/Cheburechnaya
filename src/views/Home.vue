@@ -16,7 +16,7 @@ export default {
 
 <style lang="css">
   body{
-    background: url("../assets/nebulaBack.jpg") no-repeat;
+    background: url("../assets/wall.jpg") no-repeat fixed;
     background-size: 100%;
   }
 </style>

@@ -10,7 +10,7 @@
                             style=" position:absolute; width: auto; cursor: pointer; z-index: 1"
                     >
                         <v-img src="../src/assets/logo.png" style="width: 70px;" />
-                        <span style="position:absolute; top: 33%; color: white; margin-left: 80px; width: 200px">
+                        <span class="headerName">
                             ЧЕБУРЕЧНАЯ НА ЗАКАТЕ
                         </span>
                     </div>
@@ -324,52 +324,40 @@
 
 <style scoped>
     @import "styles/buttons.css";
-    @import "styles/customVariables.css";
+    @import "styles/app-bar.css";
 
+    .headerName{
+        position:absolute;
+        top: 40%;
+        color: white;
+        margin-left: 80px;
+        width: 200px;
+        box-shadow: black;
+    }
     .v-application{
         background: transparent !important;
+
+        box-shadow: 0 0 50px 20px #ffffff24, 0 0 100px 59px #ffffff1c inset !important;
+    }
+    .theme--dark.v-sheet{
+        background: transparent;
     }
     .appBar{
         background: transparent !important;
-        box-shadow: none !important;
-        backdrop-filter: blur(2px);
+        /*backdrop-filter: blur(1px);*/
+    }
+    .v-divider{
+        background: white;
+    }
+    .v-application--wrap{
     }
 
-        /*Реализация плавного перехода*/
 
-    /*Анимация при появлении*/
-    .fade-enter-active {
-        animation: inPage .6s;
-    }
-
-    /*Анимация при исчезании*/
-    .fade-leave-active {
-        animation: outPage .2s;
-    }
-
-    @keyframes inPage {
-        from {
-            transform: translateY(-1%);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 100%;
-        }
-    }
-    @keyframes outPage {
-        from {
-            transform: translateY(0);
-            opacity: 100%;
-        }
-        to {
-            transform: translateY(1%);
-            opacity: 0;
-        }
-    }
 
 </style>
 <style>
+    @import "styles/customVariables.css";
+
     body{
         padding: 0 10% 5% 10%;
     }

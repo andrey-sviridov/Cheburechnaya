@@ -1,13 +1,17 @@
 
-.v-card__text{
-    background-color: #2a2a2a;
+.v-dialog{
+    backdrop-filter: blur(3px);
+    background: rgba(2, 2, 2, 0.27);
 }
-.v-card__title{
-    background-color: #2a2a2a;
+.theme--dark.v-divider{
+    background: rgba(59, 59, 59, 0.27);
 }
-.v-card__actions{
-    background-color: #2a2a2a;
+.v-data-table, .v-card {
+    margin: 0 0 10px 0;
+    background: rgba(62, 62, 62, 0.79) !important;
+    box-shadow: red;
+    outline: rgba(0, 0, 0, 0.3) solid 2px !important;
 }
-.v-divider{
-    background-color: #2a2a2a;
+.v-tab{
+    color: #e8e8e8 !important;
 }

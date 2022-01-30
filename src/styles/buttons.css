@@ -4,6 +4,6 @@
 }
 .v-btn:not(.v-btn--round){
     background: transparent !important;
-    backdrop-filter: blur(3px) !important;
+    /*backdrop-filter: blur(3px) !important;*/
     box-shadow: none !important;
 }
