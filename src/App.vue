@@ -10,24 +10,31 @@
                             style=" position:absolute; width: auto; cursor: pointer; z-index: 1"
                     >
                         <v-img src="../src/assets/logo.png" style="width: 70px;" />
-                        <span class="headerName">
+                        <span id="logoName" class="headerName">
                             ЧЕБУРЕЧНАЯ НА ЗАКАТЕ
                         </span>
                     </div>
-                    <v-tabs>
+                    <v-tabs id="navTabs">
                         <v-spacer>
                         </v-spacer>
                             <v-tab @click="$router.push({name: 'Main'})">Главная</v-tab>
                             <v-tab @click="$router.push({name: 'About'})">Биография</v-tab>
                             <v-tab @click="$router.push({name: 'Info'})">Информация</v-tab>
-                        <v-spacer></v-spacer>
+                        <v-spacer id="spacerRight"></v-spacer>
                         <v-btn
                                 style="height: auto"
                                 @click="openLoginDialog"
                         >
                             <v-icon>mdi-account</v-icon>
                             Войти
-                        </v-btn>
+                        </v-btn><v-btn
+                            color="primary"
+                            icon
+                            @click="isSnackbarTopRightVisible = true"
+                    >
+                        sadas
+                    </v-btn>
+
                     </v-tabs>
                 </v-app-bar>
             <div class="router-div">
@@ -50,12 +57,11 @@
                         >
                             Регистрация
                             <v-spacer/>
-                            <v-btn
-                                    outlined
+                            <v-icon
                                     @click="hideRegistrationDialog"
                             >
-                                X
-                            </v-btn>
+                                mdi-close
+                            </v-icon>
                         </v-card-title>
                         <v-stepper v-model="e1">
                             <v-stepper-header>
@@ -95,15 +101,15 @@
                                     >
                                         <v-text-field
                                                 type="login"
-                                                v-model="registration.login"
+                                                v-model.trim="registration.login"
                                                 label="Логин"
-                                                :rules="[valRequired]"
+                                                :rules="[this.$valid.valRequired]"
                                         />
                                         <v-text-field
                                                 type="password"
-                                                v-model="registration.password"
+                                                v-model.trim="registration.password"
                                                 label="Пароль"
-                                                :rules="[valRequired]"
+                                                :rules="[this.$valid.valRequired]"
                                         />
                                     </v-form>
 
@@ -131,19 +137,19 @@
                                             height="200px"
                                     >
                                         <v-text-field
-                                                v-model="registration.firstName"
+                                                v-model.trim="registration.firstName"
                                                 label="Имя"
-                                                :rules="[valRequired]"
+                                                :rules="[this.$valid.valRequired]"
                                         />
                                         <v-text-field
-                                                v-model="registration.lastName"
+                                                v-model.trim="registration.lastName"
                                                 label="Фамилия"
-                                                :rules="[valRequired]"
+                                                :rules="[this.$valid.valRequired]"
                                         />
                                         <v-text-field
-                                                v-model="registration.email"
+                                                v-model.trim="registration.email"
                                                 label="Электронная почта"
-                                                :rules="[valRequired, emailValidator]"
+                                                :rules="[this.$valid.valRequired, this.$valid.emailValidator]"
                                         />
                                     </v-form>
 
@@ -178,6 +184,7 @@
 
                                     <v-btn
                                             color="success"
+                                            @click="register"
                                     >
                                         Зарегистрироваться
                                     </v-btn>
@@ -205,12 +212,12 @@
                         >
                             Авторизация
                             <v-spacer/>
-                            <v-btn
-                                    outlined
+
+                            <v-icon
                                     @click="hideAuthorizationDialog"
                             >
-                                X
-                            </v-btn>
+                                mdi-close
+                            </v-icon>
                         </v-card-title>
                         <v-divider />
 
@@ -218,7 +225,7 @@
                         >
                             <v-text-field
                                     v-model="authorization.login"
-                                    :rules="[valRequired]"
+                                    :rules="[this.$valid.valRequired]"
                                     label="Логин"
                                     required
                             ></v-text-field>
@@ -226,7 +233,7 @@
                                     v-model="authorization.password"
                                     label="Пароль"
                                     type="password"
-                                    :rules="[valRequired]"
+                                    :rules="[this.$valid.valRequired]"
                                     required
 
                             />
@@ -246,29 +253,47 @@
                                     :disabled="!valid"
                                     color="primary"
                                     text
-                                    @click="hideLoginDialog"
+                                    @click="login"
                             >
                                 Авторизоваться
                             </v-btn>
                         </v-card-actions>
                     </v-form>
                 </v-dialog>
+
             </div>
         </div>
+        <v-snackbar
+                v-model="isSnackbarTopRightVisible"
+                top
+                right
+                color="success"
+
+        >
+            SOME TEXT
+        </v-snackbar>
     </v-app>
 </template>
 
 <script>
-    import { valRequired, emailValidator } from '@/validations'
     export default {
         name: "App",
         setup(){
-            return{
-            }
         },
         data(){
             return{
+                isSnackbarTopRightVisible: false,
+                alert: {
+                  color: 'success',
+                  show: 'false',
+                  text: 'sads'
+                },
                 e1: 1,
+                logged: false,
+                currentUser: {
+                    currentLogin: '',
+                    currentUserName: '',
+                },
                 regValid: true,
                 valid: true,
                 regDialog: false,
@@ -284,19 +309,23 @@
                     login: '',
                     password: '',
                 },
-
-                valRequired,
-                emailValidator
+                users:[
+                ]
             }
         },
         methods:{
             validate () {
-                this.$refs.form.validate()
+                this.$refs.form.validate();
             },
             openLoginDialog(){
                 this.dialog = true;
             },
-            hideLoginDialog(){
+            login(){
+                let login = this.users.filter(x=>x.login === this.authorization.login);
+                if(login.password === this.authorization.password){
+                    alert('OK')
+                }else alert('BAD')
+
                 this.dialog = false;
                 this.authorization.login = '';
                 this.authorization.password = '';
@@ -307,16 +336,23 @@
             },
             hideRegistrationDialog(){
                 this.regDialog = false;
-                this.registration.login = ''
-                this.registration.password = ''
-                this.registration.firstName = ''
-                this.registration.lastName = ''
-                this.registration.email = ''
+                this.registration.login = '';
+                this.registration.password = '';
+                this.registration.firstName = '';
+                this.registration.lastName = '';
+                this.registration.email = '';
             },
             hideAuthorizationDialog(){
                 this.dialog = false;
-                this.authorization.login = ''
-                this.authorization.password = ''
+                this.authorization.login = '';
+                this.authorization.password = '';
+            },
+            register(){
+                this.users.push(this.registration);
+
+                this.alert.color = 'success';
+                this.alert.show = true;
+                this.alert.text = 'some text';
             },
         }
     }
@@ -350,6 +386,25 @@
         background: white;
     }
     .v-application--wrap{
+    }
+
+    @media(max-width: 1308px){
+        #logoName{
+            display: none;
+        }
+    }
+    @media (max-width: 834px) {
+
+        #spacerRight{
+            display: none;
+        }
+    }
+    @media (max-width: 738px) {
+
+        #navTabs{
+            flex-direction: column;
+            align-items: center;
+        }
     }
 
 
