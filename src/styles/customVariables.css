@@ -8,9 +8,8 @@
 }
 .v-data-table, .v-card {
     margin: 0 0 10px 0;
-    background: rgba(62, 62, 62, 0.79) !important;
-    box-shadow: red;
-    outline: rgba(0, 0, 0, 0.3) solid 2px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    outline: rgba(255, 255, 255, 0.3) solid 2px !important;
 }
 .v-tab{
     color: #e8e8e8 !important;

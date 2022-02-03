@@ -20,6 +20,7 @@
                             <v-tab @click="$router.push({name: 'Main'})">Главная</v-tab>
                             <v-tab @click="$router.push({name: 'About'})">Биография</v-tab>
                             <v-tab @click="$router.push({name: 'Info'})">Информация</v-tab>
+
                         <v-spacer id="spacerRight"></v-spacer>
                         <v-btn
                                 style="height: auto"
@@ -27,13 +28,7 @@
                         >
                             <v-icon>mdi-account</v-icon>
                             Войти
-                        </v-btn><v-btn
-                            color="primary"
-                            icon
-                            @click="isSnackbarTopRightVisible = true"
-                    >
-                        sadas
-                    </v-btn>
+                        </v-btn>
 
                     </v-tabs>
                 </v-app-bar>
@@ -422,6 +417,9 @@
             flex-direction: column;
             align-items: center;
         }
+    }
+    .router-view{
+        margin-top: 20px;
     }
 </style>
 <style>
