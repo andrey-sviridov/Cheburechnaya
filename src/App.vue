@@ -261,23 +261,38 @@
                     </v-form>
                 </v-dialog>
 
+                <alert-window
+                >
+                    <div slot="title">
+                        <p>SLOT TITLE</p>
+                    </div>
+                    <div slot="body">
+                        <v-text-field>slot TF</v-text-field>
+                    </div>
+                    <div slot="buttons" slot-scope="changeVisible">
+                        <v-btn @click="changeVisible(false)">slot button</v-btn>
+                    </div>
+                </alert-window>
+
             </div>
         </div>
         <v-snackbar
-                v-model="isSnackbarTopRightVisible"
+                v-model="alert.show"
                 top
                 right
                 color="success"
-
+                transition="fade-transition"
         >
-            SOME TEXT
+            {{alert.text}}
         </v-snackbar>
     </v-app>
 </template>
 
 <script>
+    import AlertWindow from "./components/AlertWindow";
     export default {
         name: "App",
+        components: {AlertWindow},
         setup(){
         },
         data(){
@@ -285,7 +300,7 @@
                 isSnackbarTopRightVisible: false,
                 alert: {
                   color: 'success',
-                  show: 'false',
+                  show: false,
                   text: 'sads'
                 },
                 e1: 1,
@@ -321,8 +336,8 @@
                 this.dialog = true;
             },
             login(){
-                let login = this.users.filter(x=>x.login === this.authorization.login);
-                if(login.password === this.authorization.password){
+                let login = this.users.find(x=>x.login === this.authorization.login);
+                if(login?.password === this.authorization.password){
                     alert('OK')
                 }else alert('BAD')
 
@@ -348,11 +363,13 @@
                 this.authorization.password = '';
             },
             register(){
-                this.users.push(this.registration);
+                let newUser = Object.assign({},this.registration);
+                this.users.push(newUser);
 
                 this.alert.color = 'success';
                 this.alert.show = true;
-                this.alert.text = 'some text';
+                this.alert.text = 'Регистрация успешно завершена';
+                this.hideRegistrationDialog();
             },
         }
     }
@@ -406,17 +423,15 @@
             align-items: center;
         }
     }
-
-
-
 </style>
 <style>
     @import "styles/customVariables.css";
 
     body{
+        background: url("../src/assets/wall.jpg") no-repeat fixed;
+        background-size: 100%;
         padding: 0 10% 5% 10%;
     }
-
 </style>
 
 

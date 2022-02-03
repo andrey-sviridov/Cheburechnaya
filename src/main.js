@@ -3,10 +3,10 @@ import App from './App.vue'
 import router from './router/index'
 import vuetify from "@/plugins/vuetify";
 import VueRouter from "vue-router";
-import {valRequired, emailValidator} from "./validations.js"
+import * as validations from "./validations.js"
 
 Vue.config.productionTip = false
-Vue.prototype.$valid = {valRequired, emailValidator};
+Vue.prototype.$valid = validations;
 
 Vue.use(VueRouter);
 
