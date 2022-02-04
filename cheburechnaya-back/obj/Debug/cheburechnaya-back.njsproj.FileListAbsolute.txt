@@ -1,0 +1,3 @@
+D:\Projects\cheburechnaya-back\cheburechnaya-back\obj\Debug\cheburechnaya-back.njsproj.AssemblyReference.cache
+D:\Projects\cheburechnaya-back\cheburechnaya-back\obj\Debug\cheburechnaya-back.njsproj.CoreCompileInputs.cache
+D:\Projects\cheburechnaya-back\cheburechnaya-back\bin\Microsoft.NodejsTools.WebRole.dll

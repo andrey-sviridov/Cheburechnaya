@@ -4,11 +4,15 @@ import router from './router/index'
 import vuetify from "@/plugins/vuetify";
 import VueRouter from "vue-router";
 import * as validations from "./validations.js"
+import axios from "axios"
+import VueAxios from "vue-axios"
 
 Vue.config.productionTip = false
 Vue.prototype.$valid = validations;
+Vue.prototype.$url = 'http://localhost:3000/todos/';
 
 Vue.use(VueRouter);
+Vue.use(VueAxios,axios)
 
 new Vue({
   router,

@@ -1,0 +1,30 @@
+{
+  "name": "cheburechnaya-back",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "cheburechnaya-back",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "dev": "cross-env NOVE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "gen": "node ./swagger/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.7",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "express": "^4.17.2",
+    "lowdb": "^3.0.0",
+    "nodemon": "^2.0.15",
+    "swagger-autogen": "^2.18.8",
+    "swagger-ui-express": "^4.3.0"
+  }
+}

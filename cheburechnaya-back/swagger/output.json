@@ -1,0 +1,208 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "CRUD",
+    "description": "CRUD операции с объектом",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/todos/": {
+      "get": {
+        "description": "Get all todos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "description": "Create new object",
+        "parameters": [
+          {
+            "name": "new object",
+            "in": "body",
+            "description": "Create a new object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Array of new todos",
+            "schema": {
+              "$ref": "#/definitions/CreateObject"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/todos/{id}": {
+      "get": {
+        "description": "Get object by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object with provided ID",
+            "schema": {
+              "$ref": "#/definitions/List"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update existing object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Existing object ID"
+          },
+          {
+            "name": "Changes",
+            "in": "body",
+            "description": "Existing object changes",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Changes"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Array of existing object",
+            "schema": {
+              "$ref": "#/definitions/Changes"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "description": "Remove existing object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Existing object ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Delete the specificly existing object",
+            "schema": {
+              "$ref": "#/definitions/SpecificlyObject"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "List": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "exampleTitle"
+        },
+        "text": {
+          "type": "string",
+          "example": "exampleText"
+        },
+        "liked": {
+          "type": "boolean",
+          "example": false
+        },
+        "likedCount": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "CreateObject": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "exampleTitle"
+        },
+        "text": {
+          "type": "string",
+          "example": "exampleText"
+        },
+        "liked": {
+          "type": "boolean",
+          "example": false
+        },
+        "likedCount": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "Changes": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "exampleTitle"
+        },
+        "text": {
+          "type": "string",
+          "example": "exampleText"
+        },
+        "liked": {
+          "type": "boolean",
+          "example": false
+        },
+        "likedCount": {
+          "type": "number",
+          "example": 0
+        }
+      }
+    },
+    "SpecificlyObject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    }
+  }
+}

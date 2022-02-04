@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <v-btn @click="getList">axios</v-btn>
     <div v-for="item in items" :key="item.title">
       <v-card>
         <v-card-title>
@@ -8,7 +9,6 @@
         <v-card-text>
           {{item.text}}
         </v-card-text>
-        <v-card-subtitle>asdsadasd</v-card-subtitle>
         <v-card-actions>
           <v-btn
                   @click="like(item)"
@@ -30,36 +30,15 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'About',
+    mounted() {
+      this.getList();
+    },
     data(){
       return{
-        items: [
-          {
-            title: 'Стишок о бомже',
-            text: 'Обосрался вдруг бомжара, оказался это шкипер',
-            liked: true,
-            likedCount: 558
-          },
-          {
-            title: 'Стишок про говно',
-            text: 'Выпустили близы аддон, а оказался он говном',
-            liked: false,
-            likedCount: 0
-          },
-          {
-            title: 'История о крабе',
-            text: 'Пришёл краб в бар а там хабар',
-            liked: false,
-            likedCount: 0
-          },
-          {
-            title: 'Черубек из Кахастана',
-            text: 'жил-был и не тужил',
-            liked: false,
-            likedCount: 0
-          },
-        ],
+        items: [],
       }
     },
     methods:{
@@ -73,6 +52,12 @@
         }else{
           item.likedCount = --item.likedCount
         }
+      },
+      getList(){
+        axios.get(`${this.$url}`).then((response)=>{
+          this.items = response.data
+          console.log(response.data)
+        })
       }
     }
   }
@@ -83,7 +68,7 @@
     color: white !important;
   }
   .likedClass .v-icon{
-    color: red !important;
+    color: #ff4d4d !important;
     animation: anim .5s;
   }
   @keyframes anim {

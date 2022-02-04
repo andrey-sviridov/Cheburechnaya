@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "title": "Стишок о бомже",
+    "text": "Обкекался вдруг бомжара, оказался это шкипер",
+    "liked": true,
+    "likedCount": 558
+  },
+  {
+    "id": 2,
+    "title": "Стишок про ошибку",
+    "text": "Выпустили близы аддон, а оказался он кеком",
+    "liked": false,
+    "likedCount": 0
+  },
+  {
+    "id": 3,
+    "title": "История о крабе",
+    "text": "Пришёл краб в бар а там хабар",
+    "liked": false,
+    "likedCount": 0
+  },
+  {
+    "id": 4,
+    "title": "Черубек из страны",
+    "text": "жил-был и не тужил",
+    "liked": false,
+    "likedCount": 0
+  },
+  {
+    "id": 5
+  },
+  {
+    "id": 6,
+    "title": "Изменённый заголовок объекта",
+    "text": "Изменённый текст объекта",
+    "liked": false,
+    "likedCount": 2
+  },
+  {
+    "id": 7,
+    "changes": {
+      "title": "exampleTitle",
+      "text": "exampleText",
+      "liked": false,
+      "likedCount": 0
+    }
+  },
+  {
+    "id": 8,
+    "title": "Заголовок из постмана",
+    "text": "Текст из постмана",
+    "liked": false,
+    "likedCount": 1
+  },
+  {
+    "id": 9,
+    "title": "Заголовок из постмана 2",
+    "text": "Текст из постмана 2",
+    "liked": false,
+    "likedCount": 1
+  },
+  {
+    "id": 10,
+    "title": "exampleTitle",
+    "text": "exampleText",
+    "liked": false,
+    "likedCount": 0
+  },
+  {
+    "id": 11,
+    "title": "privetTitle",
+    "text": "privetText",
+    "liked": true,
+    "likedCount": 11
+  }
+]
