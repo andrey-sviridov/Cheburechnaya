@@ -22,6 +22,14 @@ export default new VueRouter({
             path: '/info',
             name: 'Info',
             component: Info
+        },
+        {
+            path: '/test',
+            name: 'Info',
+            component: () => import('@/views/Test.vue'),
+            meta: {
+                layout: 'blank'
+            },
         }
     ]
 },);
