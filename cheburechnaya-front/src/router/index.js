@@ -25,7 +25,7 @@ export default new VueRouter({
         },
         {
             path: '/test',
-            name: 'Info',
+            name: 'Test',
             component: () => import('@/views/Test.vue'),
             meta: {
                 layout: 'blank'

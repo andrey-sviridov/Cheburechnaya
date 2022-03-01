@@ -1,6 +1,5 @@
 <template>
     <div>
-        some text
         <v-card>
             <v-card-title>Приветики</v-card-title>
             <v-card-text>Примерно такой вот текст будет тут</v-card-text>
