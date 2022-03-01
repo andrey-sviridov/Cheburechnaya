@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <v-btn @click="getList">axios</v-btn>
+<!--    <v-btn @click="getList">axios</v-btn>-->
     <div v-for="item in items" :key="item.title">
       <v-card>
         <v-card-title>

@@ -10,14 +10,15 @@
                 <v-avatar
                         class="mr-10"
                         color="grey darken-1"
-                        size="32"
+                        size="44"
                 >
                     <v-img src="../src/assets/logo.png" />
                 </v-avatar>
-                <span>
+                <span
+                    class="mr-5"
+                >
                     Чебуречная на закате
                 </span>
-                <v-divider vertical class="ml-10"/>
                 <v-tab @click="$router.push({name: 'Main'})">
                     Главная
                 </v-tab>
@@ -36,20 +37,24 @@
                     Войти
                 </v-btn>
                 <div v-if="logged">
-                    <v-btn
-                            @click="currentUser = [], logged = false"
-                            class="mr-5"
-                    >
-                        Выйти
-                    </v-btn>
-                    Привет, {{this.currentUser.currentUserName}}!
+                    <span>
+                        Привет, {{this.currentUser.currentUserName}}!
+                    </span>
                     <v-avatar
-                            style="cursor: pointer"
+                            style="cursor: default"
                             color="primary"
                             class="ml-5"
                     >
-                        {{(this.currentUser.currentUserName.slice(0,this.currentUser.currentUserName.length-2)).toUpperCase()}}
+                        {{(this.currentUser.currentUserName.slice(0,1)).toUpperCase()}}
                     </v-avatar>
+                    <v-btn
+                            @click="currentUser = [], logged = false"
+                            class="mr-3"
+                            outlined
+                    >
+                        Выйти
+                        <v-icon>mdi-logout</v-icon>
+                    </v-btn>
                 </div>
             </v-container>
         </v-app-bar>
@@ -334,6 +339,10 @@
                     {
                         login: 'asd',
                         password: 'asd'
+                    },
+                    {
+                        login: 'qwert',
+                        password: 'q'
                     }
                 ]
             }
