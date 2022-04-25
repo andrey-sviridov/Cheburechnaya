@@ -1,3 +1,11 @@
+bin
+obj
+.suo
+.vs
+node_modules
+*.bak
+*.idea
+
 # Logs
 logs
 *.log

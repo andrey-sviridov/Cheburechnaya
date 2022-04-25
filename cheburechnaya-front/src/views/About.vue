@@ -54,7 +54,7 @@
         }
       },
       getList(){
-        axios.get(`${this.$url}`).then((response)=>{
+        axios.get(`${this.$url}/GetPosts`).then((response)=>{
           this.items = response.data
           console.log(response.data)
         })

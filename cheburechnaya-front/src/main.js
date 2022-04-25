@@ -9,7 +9,7 @@ import VueAxios from "vue-axios"
 
 Vue.config.productionTip = false
 Vue.prototype.$valid = validations;
-Vue.prototype.$url = 'http://localhost:3000/todos/';
+Vue.prototype.$url = 'https://localhost:7065';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios,axios)
