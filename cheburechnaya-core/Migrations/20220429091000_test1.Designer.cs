@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cheburechnaya_core.Data;
 
@@ -10,9 +11,10 @@ using cheburechnaya_core.Data;
 namespace cheburechnaya_core.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20220429091000_test1")]
+    partial class test1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +23,7 @@ namespace cheburechnaya_core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("cheburechnaya_core.Models.Post", b =>
+            modelBuilder.Entity("cheburechnaya_core.Models.LikeInformation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,8 +31,28 @@ namespace cheburechnaya_core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Liked")
-                        .HasColumnType("bit");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LikeInformations");
+                });
+
+            modelBuilder.Entity("cheburechnaya_core.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -54,50 +76,46 @@ namespace cheburechnaya_core.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nickname")
-                        .IsRequired()
+                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PostUser", b =>
+            modelBuilder.Entity("cheburechnaya_core.Models.LikeInformation", b =>
                 {
-                    b.Property<int>("LikedId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LikesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("LikedId", "LikesId");
-
-                    b.HasIndex("LikesId");
-
-                    b.ToTable("PostUser");
-                });
-
-            modelBuilder.Entity("PostUser", b =>
-                {
-                    b.HasOne("cheburechnaya_core.Models.Post", null)
-                        .WithMany()
-                        .HasForeignKey("LikedId")
+                    b.HasOne("cheburechnaya_core.Models.Post", "Post")
+                        .WithMany("UserLiked")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("cheburechnaya_core.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("LikesId")
+                    b.HasOne("cheburechnaya_core.Models.User", "User")
+                        .WithMany("PostLiked")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("cheburechnaya_core.Models.Post", b =>
+                {
+                    b.Navigation("UserLiked");
+                });
+
+            modelBuilder.Entity("cheburechnaya_core.Models.User", b =>
+                {
+                    b.Navigation("PostLiked");
                 });
 #pragma warning restore 612, 618
         }

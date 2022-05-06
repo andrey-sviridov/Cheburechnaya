@@ -1,22 +1,28 @@
-﻿using cheburechnaya_core.Data;
+﻿using AutoMapper;
+using cheburechnaya_core.Data;
 using cheburechnaya_core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace cheburechnaya_core.Controllers {
     [ApiController]
     public class PostsController : ControllerBase {
         private readonly ILogger<PostsController> _logger;
-       public PostsController(ILogger<PostsController> logger) {
+        private readonly IMapper _mapper;
+
+        public PostsController(ILogger<PostsController> logger, IMapper mapper) {
             _logger = logger;
+            _mapper = mapper;
         }
 
         [Route("/GetPosts")]
         [HttpGet]
-        public List<Post> GetPosts() {
+        public List<PostModel> GetPosts() {
             using ModelContext context = new ModelContext();
-            var posts = context.Posts.ToList();
+            var posts = context.Posts.Include(x=>x.UserLiked).ToList();
+            var res = _mapper.Map<List<Post>, List<PostModel>>(posts);
                         
-            return posts;
+            return res;
         }
         [Route("/NewPost")]
         [HttpPost]
@@ -34,12 +40,13 @@ namespace cheburechnaya_core.Controllers {
         }
         [Route("/LikePost/{id}")]
         [HttpPut]
-        public int? LikePost(int id) {
+        public async Task<int?> LikePostAsync(int id) {
             ModelContext context = new ModelContext();
 
             Post post = context.Posts.FirstOrDefault(x => x.Id == id);
-            if (post != null) {
-                post.Liked = true;
+            if (post != null){
+                User user = await context.Users.FindAsync(1);
+                context.LikeInformations.Add(new LikeInformation() { PostId = post.Id, UserId = user.Id});
                 context.SaveChanges();
             }
 
@@ -47,14 +54,18 @@ namespace cheburechnaya_core.Controllers {
         }
         [Route("/UnlikePost/{id}")]
         [HttpPut]
-        public int? UnikePost(int id) {
+        public async Task<int?> UnikePost(int id) {
 
             ModelContext context = new ModelContext();
 
             Post post = context.Posts.FirstOrDefault(x => x.Id == id);
-            if (post != null) {
-                post.Liked = false;
-                context.SaveChanges();
+            if (post != null){
+                User user = await context.Users.FindAsync(1);
+                var liked = context.LikeInformations.FirstOrDefault(x=>x.PostId == post.Id && x.UserId == user.Id);
+                if (liked != null) {
+                    context.LikeInformations.Remove(liked);
+                    context.SaveChanges();
+                }
             }
 
             return post?.Id;
@@ -71,6 +82,23 @@ namespace cheburechnaya_core.Controllers {
             }
 
             return post?.Id;
+        }
+    }
+    public class PostModel {
+        public int Id { get; set; }
+        public string? Title { get; set; }
+        public string? Text { get; set; }
+    }
+    public class UserModel {
+        public int Id { get; set; }
+        public string? UserName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+    }
+
+    public class PostMappingProfile : Profile {
+        public PostMappingProfile() {
+            CreateMap<Post, PostModel>();
         }
     }
 }
