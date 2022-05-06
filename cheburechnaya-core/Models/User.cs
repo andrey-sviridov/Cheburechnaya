@@ -8,7 +8,7 @@ namespace cheburechnaya_core.Models {
         public string? UserName { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public virtual List<LikeInformation> PostLiked { get; set; }
+        public  List<Post> Posts { get; set; }
 
     }
 }

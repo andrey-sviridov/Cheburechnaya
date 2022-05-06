@@ -4,7 +4,7 @@
 
 namespace cheburechnaya_core.Migrations
 {
-    public partial class classRelationship : Migration
+    public partial class firstmigr : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,30 +41,30 @@ namespace cheburechnaya_core.Migrations
                 name: "PostUser",
                 columns: table => new
                 {
-                    PostLikedId = table.Column<int>(type: "int", nullable: false),
-                    UserLikedId = table.Column<int>(type: "int", nullable: false)
+                    PostsId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostUser", x => new { x.PostLikedId, x.UserLikedId });
+                    table.PrimaryKey("PK_PostUser", x => new { x.PostsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_PostUser_Posts_PostLikedId",
-                        column: x => x.PostLikedId,
+                        name: "FK_PostUser_Posts_PostsId",
+                        column: x => x.PostsId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostUser_Users_UserLikedId",
-                        column: x => x.UserLikedId,
+                        name: "FK_PostUser_Users_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostUser_UserLikedId",
+                name: "IX_PostUser_UsersId",
                 table: "PostUser",
-                column: "UserLikedId");
+                column: "UsersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

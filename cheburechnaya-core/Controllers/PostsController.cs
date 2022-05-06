@@ -17,11 +17,11 @@ namespace cheburechnaya_core.Controllers {
 
         [Route("/GetPosts")]
         [HttpGet]
-        public List<PostModel> GetPosts() {
+        public List<PostDto> GetPosts() {
             using ModelContext context = new ModelContext();
-            var posts = context.Posts.Include(x=>x.UserLiked).ToList();
-            var res = _mapper.Map<List<Post>, List<PostModel>>(posts);
-                        
+            var posts = context.Posts.Include(x=>x.Users).ToList();
+            var res = _mapper.Map<List<PostDto>>(posts);
+
             return res;
         }
         [Route("/NewPost")]
@@ -38,15 +38,31 @@ namespace cheburechnaya_core.Controllers {
 
             return post.Id;
         }
+        [Route("/NewUser")]
+        [HttpPost]
+        public int NewUser(string userName, string firstName, string lastName) {
+            ModelContext context = new ModelContext();
+
+            var user = new User() {
+                UserName = userName,
+                FirstName = firstName,
+                LastName = lastName,
+            };
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            return user.Id;
+        }
         [Route("/LikePost/{id}")]
         [HttpPut]
         public async Task<int?> LikePostAsync(int id) {
+            if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
 
-            Post post = context.Posts.FirstOrDefault(x => x.Id == id);
-            if (post != null){
+            Post post = await context.Posts.Include(x=>x.Users).SingleOrDefaultAsync(x=>x.Id == id);
+            if (post != null) {
                 User user = await context.Users.FindAsync(1);
-                context.LikeInformations.Add(new LikeInformation() { PostId = post.Id, UserId = user.Id});
+                post.Users.Add(user);
                 context.SaveChanges();
             }
 
@@ -55,17 +71,14 @@ namespace cheburechnaya_core.Controllers {
         [Route("/UnlikePost/{id}")]
         [HttpPut]
         public async Task<int?> UnikePost(int id) {
-
+            if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
 
-            Post post = context.Posts.FirstOrDefault(x => x.Id == id);
-            if (post != null){
+            Post post = await context.Posts.Include(x => x.Users).SingleOrDefaultAsync(x => x.Id == id);
+            if (post != null) {
                 User user = await context.Users.FindAsync(1);
-                var liked = context.LikeInformations.FirstOrDefault(x=>x.PostId == post.Id && x.UserId == user.Id);
-                if (liked != null) {
-                    context.LikeInformations.Remove(liked);
-                    context.SaveChanges();
-                }
+                post.Users.Remove(user);
+                context.SaveChanges();
             }
 
             return post?.Id;
@@ -73,9 +86,10 @@ namespace cheburechnaya_core.Controllers {
         [Route("/DeletePost/{id}")]
         [HttpDelete]
         public int? DeletePost(int id) {
+            if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
 
-            Post post = context.Posts.FirstOrDefault(x => x.Id == id);
+            Post post = context.Posts.SingleOrDefault(x => x.Id == id);
             if (post != null) {
                 context.Posts.Remove(post);
                 context.SaveChanges();
@@ -84,12 +98,13 @@ namespace cheburechnaya_core.Controllers {
             return post?.Id;
         }
     }
-    public class PostModel {
+    public class PostDto {
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Text { get; set; }
+        public List<UserDto> Users { get; set; }
     }
-    public class UserModel {
+    public class UserDto {
         public int Id { get; set; }
         public string? UserName { get; set; }
         public string? FirstName { get; set; }
@@ -98,7 +113,13 @@ namespace cheburechnaya_core.Controllers {
 
     public class PostMappingProfile : Profile {
         public PostMappingProfile() {
-            CreateMap<Post, PostModel>();
+            CreateMap<Post, PostDto>();
         }
     }
+    public class UserMappingProfile : Profile {
+        public UserMappingProfile() {
+            CreateMap<User, UserDto>();
+        }
+    }
+
 }

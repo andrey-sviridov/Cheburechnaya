@@ -10,6 +10,6 @@ namespace cheburechnaya_core.Models {
         public string? Title { get; set; }
         [Required]
         public string? Text { get; set; }
-        public virtual List<LikeInformation> UserLiked { get; set; }
+        public  List<User> Users { get; set; }
     }
 }
