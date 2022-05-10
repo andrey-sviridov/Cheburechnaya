@@ -30,25 +30,25 @@
                 </v-tab>
 
                 <v-spacer></v-spacer>
-                <v-btn v-if="!logged"
+                <v-btn v-if="this.currentUser == null"
                         style="height: auto"
                         @click="openLoginDialog"
                 >
                     Войти
                 </v-btn>
-                <div v-if="logged">
+                <div v-if="this.currentUser != null">
                     <span>
-                        Привет, {{this.currentUser.currentUserName}}!
+                        Привет, {{this.currentUser.firstName}}!
                     </span>
                     <v-avatar
                             style="cursor: default"
                             color="primary"
                             class="ml-5"
                     >
-                        {{(this.currentUser.currentUserName.slice(0,1)).toUpperCase()}}
+                        {{this.currentUser.firstName !== undefined ? (this.currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
                     </v-avatar>
                     <v-btn
-                            @click="currentUser = [], logged = false"
+                            @click="clearAuthorizedUser"
                             class="mr-3"
                             outlined
                     >
@@ -137,7 +137,7 @@
                                 >
                                     <v-text-field
                                             type="login"
-                                            v-model.trim="registration.login"
+                                            v-model.trim="registration.userName"
                                             label="Логин"
                                             :rules="[this.$valid.valRequired]"
                                     />
@@ -304,8 +304,15 @@
 </template>
 
 <script>
+    import ApiService from "./services/api.service";
     export default {
         name: "Test",
+        mounted() {
+            this.currentUser = this.getSessionStorage
+        },
+        updated() {
+            this.currentUser = this.getSessionStorage
+        },
         data(){
             return{
                 isSnackbarTopRightVisible: false,
@@ -317,8 +324,10 @@
                 e1: 1,
                 logged: false,
                 currentUser: {
-                    currentLogin: '',
-                    currentUserName: '',
+                    id: null,
+                    userName: '',
+                    firstName: '',
+                    lastName: '',
                 },
                 regValid: true,
                 valid: true,
@@ -332,7 +341,7 @@
                     firstName: '',
                     lastName: '',
                     email: '',
-                    login: '',
+                    userName: '',
                     password: '',
                 },
                 users:[
@@ -348,6 +357,12 @@
             }
         },
         methods:{
+            refreshAuthorizedUser(){
+              this.currentUser = this.getSessionStorage
+            },
+            clearAuthorizedUser(){
+                localStorage.removeItem('authorizedUser')
+            },
             validate () {
                 this.$refs.form.validate();
             },
@@ -355,11 +370,13 @@
                 this.dialog = true;
             },
             login(){
-                let login = this.users.find(x=>x.login === this.authorization.login);
-                if(login?.password === this.authorization.password){
-                    this.logged = true
-                    this.currentUser.currentUserName = login.login
-                }else alert('BAD')
+                ApiService.post('Login', this.authorization).then((response)=>{
+                    if(!response.data) return alert('Данный пользователь не зарегистрирован')
+                    console.log(response.data)
+                    console.log('asdad'+localStorage.getItem('authorizedUser'))
+                    localStorage.setItem("authorizedUser", JSON.stringify(response.data))
+                    this.refreshAuthorizedUser()
+                })
 
                 this.dialog = false;
                 this.authorization.login = '';
@@ -371,7 +388,7 @@
             },
             hideRegistrationDialog(){
                 this.regDialog = false;
-                this.registration.login = '';
+                this.registration.userName = '';
                 this.registration.password = '';
                 this.registration.firstName = '';
                 this.registration.lastName = '';
@@ -383,13 +400,43 @@
                 this.authorization.password = '';
             },
             register(){
-                let newUser = Object.assign({},this.registration);
-                this.users.push(newUser);
+                ApiService.post('Register', this.registration).then((response)=>{
+                    console.log(response.data)
+                    this.isSnackbarTopRightVisible = false;
+                    this.alert.color = 'success';
+                    this.alert.show = true;
+                    this.alert.text = 'Регистрация успешно завершена';
+                    this.hideRegistrationDialog();
+                })
 
-                this.alert.color = 'success';
-                this.alert.show = true;
-                this.alert.text = 'Регистрация успешно завершена';
-                this.hideRegistrationDialog();
+
+            },
+            clearObject(obj){
+                for(let [key, value] of Object.entries(obj)){
+                    switch (typeof value) {
+                        case 'string':
+                            obj[key] = ''
+                            break;
+                        case 'number':
+                            obj[key] = null
+                            break;
+                        case ('object'):
+                            if(value instanceof Date)
+                                obj[key] = null
+                            else
+                                obj[key] = {}
+                            break;
+                        case 'boolean':
+                            obj[key] = false
+                            break;
+                    }
+                }
+                return obj;
+            },
+        },
+        computed:{
+            getSessionStorage(){
+                return JSON.parse(localStorage.getItem('authorizedUser') ?? null)
             },
         }
     }
