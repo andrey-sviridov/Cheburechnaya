@@ -1,4 +1,7 @@
 
+using cheburechnaya_core.Controllers;
+using MediatR;
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigureCorsPolicy(builder);
@@ -9,6 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddMediatR(typeof(Program));
+builder.Services.AddControllers(option => {
+	option.Filters.Add<ValidationFilter>();
+});
+
 
 var app = builder.Build();
 

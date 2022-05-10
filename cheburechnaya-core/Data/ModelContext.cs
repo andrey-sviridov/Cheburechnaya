@@ -18,7 +18,7 @@ namespace cheburechnaya_core.Data {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder
                 //.UseLazyLoadingProxies()
-                .UseSqlServer("Server=localhost;Database=TestchebDB;Trusted_Connection=True;MultipleActiveResultSets=true");
+                .UseSqlServer("Server=localhost;Database=CheburechnayaDb;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
     }
 }

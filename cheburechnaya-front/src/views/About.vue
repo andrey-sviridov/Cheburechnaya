@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import ApiService from "../services/api.service";
   export default {
     name: 'About',
     mounted() {
@@ -46,15 +46,17 @@
         return val.likedCount === 0 ? '' : val.likedCount
       },
       like(item){
-        item.liked = !item.liked;
-        if(item.liked){
-          item.likedCount = ++item.likedCount
-        }else{
-          item.likedCount = --item.likedCount
-        }
+        ApiService.put(`LikePost/${item.id}`).then(()=>{
+          this.getList()
+        })
+      },
+      unlike(item){
+        ApiService.put(`UnlikePost/${item.id}`).then(()=>{
+          this.getList()
+        })
       },
       getList(){
-        axios.get(`${this.$url}/GetPosts`).then((response)=>{
+        ApiService.get(`GetPosts`).then((response)=>{
           this.items = response.data
           console.log(response.data)
         })

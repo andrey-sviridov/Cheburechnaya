@@ -62,6 +62,7 @@ namespace cheburechnaya_core.Controllers {
             Post post = await context.Posts.Include(x=>x.Users).SingleOrDefaultAsync(x=>x.Id == id);
             if (post != null) {
                 User user = await context.Users.FindAsync(1);
+                if (post.Users.Contains(user)) return 0;
                 post.Users.Add(user);
                 context.SaveChanges();
             }
