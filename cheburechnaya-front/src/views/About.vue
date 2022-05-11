@@ -1,6 +1,8 @@
 <template>
   <div class="about">
-<!--    <v-btn @click="getList">axios</v-btn>-->
+    <v-btn
+    @click="addPost"
+    >Add Post</v-btn>
     <div v-for="item in items" :key="item.title">
       <v-card>
         <v-card-title>
@@ -12,7 +14,7 @@
         <v-card-actions>
           <v-btn
                   @click="like(item)"
-                  v-bind:class="{likedClass: item.liked}"
+                  v-bind:class="{likedClass: item.youLiked}"
           >
             <p style="top: 7px; position:relative;">{{getCountLiked(item)}}</p>
             <v-icon
@@ -42,8 +44,14 @@
       }
     },
     methods:{
+      addPost(){
+        ApiService.post('NewPost', {title: 'aaaaa.', text: 'bbbbb'}).then((response)=>{
+          console.log(response.data)
+        })
+      },
       getCountLiked(val){
-        return val.likedCount === 0 ? '' : val.likedCount
+        let likes = this.items.find(x=>x.id === val.id)?.likeCount
+        return  likes === 0 ? '' : likes
       },
       like(item){
         ApiService.put(`LikePost/${item.id}`).then(()=>{

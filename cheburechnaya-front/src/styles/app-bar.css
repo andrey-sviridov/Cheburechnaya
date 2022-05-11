@@ -7,7 +7,7 @@
 
 /*Анимация при исчезании*/
 .fade-leave-active {
-    animation: outPage .2s;
+    animation: outPage .1s;
 }
 
 @keyframes inPage {

@@ -3,7 +3,11 @@ using cheburechnaya_core.Abstractions;
 using cheburechnaya_core.Data;
 using cheburechnaya_core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace cheburechnaya_core.Controllers {
     [ApiController]
@@ -20,10 +24,12 @@ namespace cheburechnaya_core.Controllers {
         [HttpPost]
         public UserDto? CreateToDoItem([FromBody] GetLoginQuery request) {
             using ModelContext context = new ModelContext();
-            var res = context.Users.SingleOrDefault(x=>x.UserName == request.login);
+            var res = context.Users.SingleOrDefault(x=>x.UserName == request.login && x.Password == request.password);
             var model = _mapper.Map<UserDto>(res);
+            if (res != null) model.Token = CreateJwtToken(res.UserName);
             return model;
         }
+
         [Route("/Register")]
         [HttpPost]
         public int Register([FromBody] GetRegisterQuery request) {
@@ -40,6 +46,18 @@ namespace cheburechnaya_core.Controllers {
             context.SaveChanges();
 
             return newUser.Id;
+        }
+
+        private string CreateJwtToken(string UserName) {
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, UserName) };
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    claims: claims,
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromDays(7)), // время действия 7 дней
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var asda = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return asda;
         }
         public class GetSingleBreedQueryDto {
             public int Id { get; set; }

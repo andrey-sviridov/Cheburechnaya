@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using cheburechnaya_core.Data;
 using cheburechnaya_core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,42 +20,42 @@ namespace cheburechnaya_core.Controllers {
         [HttpGet]
         public List<PostDto> GetPosts() {
             using ModelContext context = new ModelContext();
-            var posts = context.Posts.Include(x=>x.Users).ToList();
-            var res = _mapper.Map<List<PostDto>>(posts);
+            var posts = context.Posts.Include(x => x.Users).ToList();
+            var res = _mapper.Map<List<PostDto>>(posts).Select(x=> new PostDto{
+                Id = x.Id,
+                LikeCount = x.Users.Count,
+                YouLiked = x.Users.Any(l => l.Id == 1),
+                Text = x.Text,
+                Title = x.Title,
+                Users = x.Users
+            }).ToList();
 
             return res;
         }
+
+        public class NewPostQuery {
+            public string Title { get; set; }
+            public string Text { get; set; }
+        }
+
         [Route("/NewPost")]
         [HttpPost]
-        public int NewPost(string title, string text) {
+        [Authorize]
+        public int NewPost([FromBody] NewPostQuery request) {
             ModelContext context = new ModelContext();
 
             Post post = new Post() {
-                Title = title,
-                Text = text
+                Title = request.Title,
+                Text = request.Text
             };
             context.Posts.Add(post);
             context.SaveChanges();
 
             return post.Id;
         }
-        [Route("/NewUser")]
-        [HttpPost]
-        public int NewUser(string userName, string firstName, string lastName) {
-            ModelContext context = new ModelContext();
-
-            var user = new User() {
-                UserName = userName,
-                FirstName = firstName,
-                LastName = lastName,
-            };
-            context.Users.Add(user);
-            context.SaveChanges();
-
-            return user.Id;
-        }
         [Route("/LikePost/{id}")]
         [HttpPut]
+        [Authorize]
         public async Task<int?> LikePostAsync(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
@@ -71,6 +72,7 @@ namespace cheburechnaya_core.Controllers {
         }
         [Route("/UnlikePost/{id}")]
         [HttpPut]
+        [Authorize]
         public async Task<int?> UnikePost(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
@@ -86,6 +88,8 @@ namespace cheburechnaya_core.Controllers {
         }
         [Route("/DeletePost/{id}")]
         [HttpDelete]
+        [Authorize]
+
         public int? DeletePost(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
             ModelContext context = new ModelContext();
@@ -104,12 +108,15 @@ namespace cheburechnaya_core.Controllers {
         public string? Title { get; set; }
         public string? Text { get; set; }
         public List<UserDto> Users { get; set; }
+        public int LikeCount { get; set; }
+        public bool YouLiked { get; set; }
     }
     public class UserDto {
         public int Id { get; set; }
         public string? UserName { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string Token { get; set; }
     }
 
     public class PostMappingProfile : Profile {

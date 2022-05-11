@@ -30,6 +30,12 @@
                 </v-tab>
 
                 <v-spacer></v-spacer>
+                <v-btn
+                       style="height: auto"
+                       @click="this.test"
+                >
+                    TEST
+                </v-btn>
                 <v-btn v-if="this.currentUser == null"
                         style="height: auto"
                         @click="openLoginDialog"
@@ -211,7 +217,7 @@
                                         color="grey lighten-1"
                                         height="250px"
                                 >
-                                    Логин: {{registration.login}}<br/>
+                                    Логин: {{registration.userName}}<br/>
                                     Имя: {{registration.firstName}}<br/>
                                     Фамилия: {{registration.lastName}}<br/>
                                     Электронная почта: {{registration.email}}<br/>
@@ -297,21 +303,19 @@
                 </v-form>
             </v-dialog>
 
-
-
+            <snack-bar-info ref="infoSnack" />
         </div>
     </v-app>
 </template>
 
 <script>
     import ApiService from "./services/api.service";
+    import SnackBarInfo from "./components/SnackBarInfo";
     export default {
         name: "Test",
+        components: {SnackBarInfo},
         mounted() {
-            this.currentUser = this.getSessionStorage
-        },
-        updated() {
-            this.currentUser = this.getSessionStorage
+            this.refreshAuthorizedUser()
         },
         data(){
             return{
@@ -357,11 +361,16 @@
             }
         },
         methods:{
+            test(){
+                this.$refs.infoSnack.show('asda','success','topright')
+
+            },
             refreshAuthorizedUser(){
-              this.currentUser = this.getSessionStorage
+                this.currentUser = JSON.parse(localStorage.getItem('authorizedUser'))
             },
             clearAuthorizedUser(){
                 localStorage.removeItem('authorizedUser')
+                this.currentUser = null
             },
             validate () {
                 this.$refs.form.validate();
@@ -373,14 +382,14 @@
                 ApiService.post('Login', this.authorization).then((response)=>{
                     if(!response.data) return alert('Данный пользователь не зарегистрирован')
                     console.log(response.data)
-                    console.log('asdad'+localStorage.getItem('authorizedUser'))
                     localStorage.setItem("authorizedUser", JSON.stringify(response.data))
+                    localStorage.setItem("accessToken", JSON.stringify(response.data.token))
+                    console.log('Авторизован: '+localStorage.getItem('authorizedUser'))
                     this.refreshAuthorizedUser()
                 })
 
                 this.dialog = false;
-                this.authorization.login = '';
-                this.authorization.password = '';
+                this.authorization = this.clearObject(this.authorization)
             },
             showRegistrationDialog(){
                 this.hideAuthorizationDialog()
@@ -388,28 +397,17 @@
             },
             hideRegistrationDialog(){
                 this.regDialog = false;
-                this.registration.userName = '';
-                this.registration.password = '';
-                this.registration.firstName = '';
-                this.registration.lastName = '';
-                this.registration.email = '';
+                this.registration = this.clearObject(this.registration)
             },
             hideAuthorizationDialog(){
                 this.dialog = false;
-                this.authorization.login = '';
-                this.authorization.password = '';
+                this.authorization = this.clearObject(this.authorization)
             },
             register(){
-                ApiService.post('Register', this.registration).then((response)=>{
-                    console.log(response.data)
-                    this.isSnackbarTopRightVisible = false;
-                    this.alert.color = 'success';
-                    this.alert.show = true;
-                    this.alert.text = 'Регистрация успешно завершена';
+                ApiService.post('Register', this.registration).then(()=>{
+                    this.$refs.infoSnack.show('Регистрация успешно завершена','success','topright')
                     this.hideRegistrationDialog();
                 })
-
-
             },
             clearObject(obj){
                 for(let [key, value] of Object.entries(obj)){
@@ -434,11 +432,6 @@
                 return obj;
             },
         },
-        computed:{
-            getSessionStorage(){
-                return JSON.parse(localStorage.getItem('authorizedUser') ?? null)
-            },
-        }
     }
 </script>
 
@@ -457,7 +450,8 @@
     .v-application .grey.lighten-3{
         background: transparent !important;
 
-        box-shadow: 0 0 50px 20px #ffffff24, 0 0 100px 59px #ffffff1c inset !important;
+        /*Свечение вокруг компонента-страницы*/
+        /*box-shadow: 0 0 50px 20px #ffffff24, 0 0 100px 59px #ffffff1c inset !important;*/
     }
     .theme--dark.v-sheet{
         background-color: transparent;
