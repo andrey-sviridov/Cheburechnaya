@@ -46,7 +46,7 @@ namespace cheburechnaya_core.Controllers {
 
             Post post = new Post() {
                 Title = request.Title,
-                Text = request.Text
+                Text = request.Text.Replace("\n", "<br>")
             };
             context.Posts.Add(post);
             context.SaveChanges();

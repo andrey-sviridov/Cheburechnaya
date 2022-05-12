@@ -9,7 +9,7 @@ const ApiService = {
     },
 
     setHeaders() {
-        const jwtToken = AuthService.getAccessToken().replaceAll('"','')
+        const jwtToken = AuthService.getAccessToken()?.replaceAll('"','')
         axios.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
 
         if (AuthService.isLoggedOn()) {
@@ -24,8 +24,6 @@ const ApiService = {
     },
 
     post(resource, data) {
-        // eslint-disable-next-line no-debugger
-        debugger
         this.setHeaders()
         return axios.post(`/${resource}`, data);
     },

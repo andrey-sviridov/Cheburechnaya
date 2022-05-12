@@ -1,6 +1,6 @@
 
-.v-btn{
-    margin-left: 20px;
+.nav-btn{
+    height: 55px !important;
 }
 .v-btn:not(.v-btn--round){
     background: transparent !important;
