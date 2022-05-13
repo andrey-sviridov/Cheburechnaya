@@ -111,15 +111,17 @@
     </v-dialog>
 
     <confirmation-dialog ref="confirmation"/>
+    <progress-linear ref="progressLinear"/>
   </div>
 </template>
 
 <script>
   import ApiService from "../services/api.service";
   import ConfirmationDialog from "../components/ConfirmationDialog";
+  import ProgressLinear from "../components/ProgressLinear";
   export default {
     name: 'About',
-    components: {ConfirmationDialog},
+    components: {ProgressLinear, ConfirmationDialog},
     mounted() {
       this.getList();
     },
@@ -171,8 +173,10 @@
         this.$refs.confirmation.show(item)
       },
       getList(){
+        this.$refs.progressLinear.show('Загрузка списка...')
         ApiService.get(`GetPosts`).then((response)=>{
           this.items = response.data
+          this.$refs.progressLinear.hide()
         })
       }
     }
