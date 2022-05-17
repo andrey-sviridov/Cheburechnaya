@@ -26,11 +26,11 @@
             }
         },
         methods:{
-            show(msg){
+            showLinearProgress(msg){
                 this.visible = true
                 this.text = msg ?? this.text
             },
-            hide(){
+            hideLinearProgress(){
                 this.visible = false
                 this.text = 'Пожалуйста, подождите...'
             }
