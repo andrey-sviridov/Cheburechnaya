@@ -19,20 +19,26 @@
                 >
                     Чебуречная на закате
                 </span>
-                <v-tab @click="$router.push({name: 'Main'})">
+                <v-tab class="nav-btn" @click="$router.push({name: 'Main'})">
                     Главная
                 </v-tab>
-                <v-tab @click="$router.push({name: 'About'})">
+                <v-tab class="nav-btn" @click="$router.push({name: 'About'})">
                     Биография
                 </v-tab>
-                <v-tab @click="$router.push({name: 'Info'})">
+                <v-tab class="nav-btn" @click="$router.push({name: 'Info'})">
                     Информация
                 </v-tab>
 
                 <v-spacer></v-spacer>
+                <v-btn
+                       style="height: auto"
+                       @click="this.test"
+                >
+                    TEST
+                </v-btn>
                 <v-btn v-if="this.currentUser == null"
-                        style="height: auto"
-                        @click="openLoginDialog"
+                       class="nav-btn"
+                       @click="openLoginDialog"
                 >
                     Войти
                 </v-btn>
@@ -41,9 +47,9 @@
                         Привет, {{this.currentUser.firstName}}!
                     </span>
                     <v-avatar
-                            style="cursor: default"
+                            style="cursor: default;"
                             color="primary"
-                            class="ml-5"
+                            class="ml-5 mr-5"
                     >
                         {{this.currentUser.firstName !== undefined ? (this.currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
                     </v-avatar>

@@ -19,7 +19,7 @@
             <template v-slot:activator="{ attrs, on }">
               <v-btn
                       small
-                      class="white--text ma-4"
+                      class="white--text ma-5"
                       v-bind="attrs"
                       v-on="on"
               >
@@ -41,9 +41,6 @@
             </v-list>
           </v-menu>
         </v-row>
-        <v-card-text class="post-date"
-                v-html="getAuthorInfo(item)"
-        ></v-card-text>
         <v-card-text
                 v-html="item.text"
         ></v-card-text>
@@ -122,8 +119,6 @@
   import ApiService from "../services/api.service";
   import ConfirmationDialog from "../components/ConfirmationDialog";
   import ProgressLinear from "../components/ProgressLinear";
-  import moment from 'moment-with-locales-es6';
-
   export default {
     name: 'About',
     components: {ProgressLinear, ConfirmationDialog},
@@ -143,9 +138,6 @@
       }
     },
     methods:{
-      getAuthorInfo(item){
-        return moment(item.createdDate).format('DD MMMM yyyy HH:mm')
-      },
       addPost(){
         ApiService.post('NewPost', this.dialog.content).then(()=>{
           this.clearDialog()
@@ -181,7 +173,7 @@
         this.$refs.confirmation.show(item)
       },
       getList(){
-        this.$refs.progressLinear.show()
+        this.$refs.progressLinear.show('Загрузка списка...')
         ApiService.get(`GetPosts`).then((response)=>{
           this.items = response.data
           this.$refs.progressLinear.hide()
@@ -198,10 +190,6 @@
   .likedClass .v-icon{
     color: #ff4d4d !important;
     animation: anim .5s;
-  }
-  .post-date{
-    margin-top: -30px;
-    font-size: 13px;
   }
   @keyframes anim {
    0% {

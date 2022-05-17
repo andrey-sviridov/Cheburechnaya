@@ -1,6 +1,10 @@
 
 using cheburechnaya_core.Controllers;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,11 @@ builder.Services.AddMediatR(typeof(Program));
 builder.Services.AddControllers(option => {
 	option.Filters.Add<ValidationFilter>();
 });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(options =>
+        ConfigAuthOptions(options)
+	);
+builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
@@ -26,12 +35,10 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 app.UseCors("CorsPolicy");
-
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 
@@ -44,4 +51,30 @@ static void ConfigureCorsPolicy(WebApplicationBuilder builder) {
 				.AllowCredentials();
 		});
 	});
+}
+
+void ConfigAuthOptions(JwtBearerOptions options) {
+    options.TokenValidationParameters = new TokenValidationParameters {
+        // указывает, будет ли валидироваться издатель при валидации токена
+        ValidateIssuer = true,
+        // строка, представляющая издателя
+        ValidIssuer = AuthOptions.ISSUER,
+        // будет ли валидироваться потребитель токена
+        ValidateAudience = true,
+        // установка потребителя токена
+        ValidAudience = AuthOptions.AUDIENCE,
+        // будет ли валидироваться время существования
+        ValidateLifetime = true,
+        // установка ключа безопасности
+        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+        // валидация ключа безопасности
+        ValidateIssuerSigningKey = true,
+    };
+}
+public class AuthOptions {
+    public const string ISSUER = "https://localhost:7065"; // издатель токена
+    public const string AUDIENCE = "https://localhost:8080"; // потребитель токена
+    const string KEY = "qwert#321_secret";   // ключ для шифрации
+    public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
 }
