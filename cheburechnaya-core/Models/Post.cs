@@ -12,6 +12,6 @@ namespace cheburechnaya_core.Models {
         [Required]
         public string? Text { get; set; }
         public  List<User> Users { get; set; }
-        public User Author { get; set; }
+        //public User Author { get; set; }
     }
 }
