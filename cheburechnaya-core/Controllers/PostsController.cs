@@ -3,6 +3,7 @@ using cheburechnaya_core.Data;
 using cheburechnaya_core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace cheburechnaya_core.Controllers {
     [ApiController]
@@ -19,8 +20,16 @@ namespace cheburechnaya_core.Controllers {
         [HttpGet]
         public List<PostDto> GetPosts() {
             using ModelContext context = new ModelContext();
-            var posts = context.Posts.Include(x=>x.Users).ToList();
-            var res = _mapper.Map<List<PostDto>>(posts);
+            var posts = context.Posts.Include(x => x.Users).ToList();
+            var res = _mapper.Map<List<PostDto>>(posts).Select(x=> new PostDto{
+                Id = x.Id,
+                LikeCount = x.Users.Count,
+                YouLiked = x.Users.Any(l => l.Id == 1),
+                Text = x.Text,
+                Title = x.Title,
+                Users = x.Users,
+                CreatedDate = x.CreatedDate
+            }).OrderByDescending(o=>o.Id).ToList();
 
             return res;
         }
@@ -30,8 +39,8 @@ namespace cheburechnaya_core.Controllers {
             ModelContext context = new ModelContext();
 
             Post post = new Post() {
-                Title = title,
-                Text = text
+                Title = request.Title,
+                Text = request.Text.Replace("\n", "<br>"),
             };
             context.Posts.Add(post);
             context.SaveChanges();
@@ -104,6 +113,9 @@ namespace cheburechnaya_core.Controllers {
         public string? Title { get; set; }
         public string? Text { get; set; }
         public List<UserDto> Users { get; set; }
+        public int LikeCount { get; set; }
+        public bool YouLiked { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
     public class UserDto {
         public int Id { get; set; }
