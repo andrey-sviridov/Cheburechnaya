@@ -100,6 +100,7 @@
                   label="Текст"
                   outlined
                   v-model="editedItem.text"
+
           >
           </v-textarea>
         </v-card-text>
@@ -162,7 +163,7 @@
     },
     methods:{
       getAuthorInfo(item){
-        return `${item.author?.name ?? 'анонимус'} ${moment(item.createdDate).format('DD MMMM yyyy в HH:mm')} ${item.isEdited ? '(изменено)' : ''}`
+        return `${item.author != null ? `${item.author.firstName} ${item.author.lastName} (${item.author.userName})` : '(Пользователь не найден)'} ${moment(item.createdDate).format('DD MMMM yyyy в HH:mm')} ${item.isEdited ? '(изменено)' : ''}`
       },
       editPost(item){
         this.editedItem = Object.assign({}, item)

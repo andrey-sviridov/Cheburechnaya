@@ -162,7 +162,7 @@ namespace cheburechnaya_core.Controllers {
         public int LikeCount { get; set; }
         public bool YouLiked { get; set; }
         public DateTime CreatedDate { get; set; }
-        public User Author { get; set; }
+        public UserDto Author { get; set; }
         public bool IsEdited { get; set; }
     }
     public class UserDto {

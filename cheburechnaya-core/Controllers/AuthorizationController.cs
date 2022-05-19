@@ -62,7 +62,7 @@ namespace cheburechnaya_core.Controllers {
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(35)), // время действия токена 35 минут
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)), // время действия токена 35 минут
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var writedToken = new JwtSecurityTokenHandler().WriteToken(jwt);
             JwtTokenInfo newJwtInfo = new JwtTokenInfo() {

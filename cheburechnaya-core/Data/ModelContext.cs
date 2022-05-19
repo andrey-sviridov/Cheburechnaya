@@ -10,6 +10,7 @@ namespace cheburechnaya_core.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Post>().HasOne(x => x.Author).WithMany(x => x.CreatedPosts).HasForeignKey("AuthorId").OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.ApplyConfiguration(new PostConfiguration());
 

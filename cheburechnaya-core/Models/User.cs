@@ -12,6 +12,7 @@ namespace cheburechnaya_core.Models {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public  List<Post> Posts { get; set; }
+        public  List<Post> CreatedPosts { get; set; }
 
     }
 }
