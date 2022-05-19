@@ -44,11 +44,13 @@
         data(){
             return{
                 visible: false,
-                item:[]
+                item:[],
+                callback : null
             }
         },
         methods:{
-            show(item){
+            showConfirm(callback, item){
+                this.callback = callback
                 this.item = item
                 this.visible = true
             },
@@ -57,7 +59,8 @@
                 this.item = []
             },
             confirm(){
-
+                this.visible = false
+                this.callback('ok')
             }
         }
     }

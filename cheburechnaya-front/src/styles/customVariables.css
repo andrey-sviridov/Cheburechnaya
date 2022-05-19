@@ -1,7 +1,7 @@
 
 .v-dialog{
-    backdrop-filter: blur(3px);
-    background: rgba(2, 2, 2, 0.3);
+    backdrop-filter: blur(1px);
+    background: rgba(2, 2, 2, 0.4);
     border: 1px solid gray;
 }
 .theme--dark.v-divider{
@@ -16,9 +16,19 @@
     color: #e8e8e8 !important;
 }
 .row{
-    padding-left: 3vh;
+    padding-left: 20px;
+}
+.card-status-text{
+    margin-top: -35px !important;
+    padding-left: 25px !important;
+    font-size: 12px !important;
+}
+.card-text{
+    padding-left: 40px !important;
+    color: white !important;
 }
 .menu{
+    backdrop-filter: blur(1px);
     background: rgba(2, 2, 2, 0.3) !important;
     border: 2px solid rgba(255, 255, 255, 0.3) !important;
 }

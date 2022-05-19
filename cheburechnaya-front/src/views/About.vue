@@ -13,13 +13,12 @@
           </v-card-title>
           <v-spacer/>
           <v-menu
-
                   offset-y
           >
             <template v-slot:activator="{ attrs, on }">
               <v-btn
                       small
-                      class="white--text ma-5"
+                      class="white--text mt-8 mr-5"
                       v-bind="attrs"
                       v-on="on"
               >
@@ -29,7 +28,11 @@
 
             <v-list class="menu">
               <v-list-item link>
-                <v-list-item-title>Изменить</v-list-item-title>
+                <v-list-item-title
+                  @click="editPost(item)"
+                >
+                  Изменить
+                </v-list-item-title>
               </v-list-item>
               <v-list-item link
                            @click="confirmDelete(item)">
@@ -42,17 +45,28 @@
           </v-menu>
         </v-row>
         <v-card-text
+                class="card-status-text"
+        >
+          {{getAuthorInfo(item)}}
+        </v-card-text>
+        <v-divider/>
+        <v-card-text
+                class="card-text"
                 v-html="item.text"
         ></v-card-text>
+        <v-divider/>
         <v-card-actions>
           <v-btn
+                  small
                   @click="like(item)"
                   v-bind:class="{likedClass: item.youLiked}"
+                  class="light-blue--text transparent"
           >
             <p style="top: 7px; position:relative;">{{getCountLiked(item)}}</p>
             <v-icon
                     right
                     dark
+                    class="light-blue--text"
             >
               mdi-heart
             </v-icon>
@@ -80,13 +94,15 @@
                   label="Заголовок"
                   required
                   outlined
-                  v-model="dialog.content.title"
+                  v-model="editedItem.title"
           ></v-text-field>
           <v-textarea
                   label="Текст"
                   outlined
-                  v-model="dialog.content.text"
-          ></v-textarea>
+                  v-model="editedItem.text"
+
+          >
+          </v-textarea>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -112,6 +128,7 @@
 
     <confirmation-dialog ref="confirmation"/>
     <progress-linear ref="progressLinear"/>
+    <snack-bar-info ref="infoSnack" />
   </div>
 </template>
 
@@ -119,14 +136,21 @@
   import ApiService from "../services/api.service";
   import ConfirmationDialog from "../components/ConfirmationDialog";
   import ProgressLinear from "../components/ProgressLinear";
+  import moment from 'moment-with-locales-es6'
+  import SnackBarInfo from "../components/SnackBarInfo";
+
   export default {
     name: 'About',
-    components: {ProgressLinear, ConfirmationDialog},
+    components: {SnackBarInfo, ProgressLinear, ConfirmationDialog},
     mounted() {
       this.getList();
     },
     data(){
       return{
+        editedItem:{
+          title: '',
+          text: ''
+        },
         items: [],
         dialog:{
           content:{
@@ -138,22 +162,51 @@
       }
     },
     methods:{
+      getAuthorInfo(item){
+        return `${item.author != null ? `${item.author.firstName} ${item.author.lastName} (${item.author.userName})` : '(Пользователь не найден)'} ${moment(item.createdDate).format('DD MMMM yyyy в HH:mm')} ${item.isEdited ? '(изменено)' : ''}`
+      },
+      editPost(item){
+        this.editedItem = Object.assign({}, item)
+        this.editedItem.text = item.text.replaceAll('<br>','\n')
+        this.dialog.visible = true
+      },
       addPost(){
-        ApiService.post('NewPost', this.dialog.content).then(()=>{
-          this.clearDialog()
-          this.getList()
-        }).catch((error)=>{
-          switch (error.response.status) {
-            case 401:
-              alert('Для совершения данного действия нужно авторизоваться')
-              break;
-          }
-        })
+        if(!this.editedItem.id){
+          ApiService.post('NewPost', this.editedItem).then(()=>{
+            this.$refs.infoSnack.showSnackbar('Пост успешно добавлен','success', 'top')
+            this.clearDialog()
+            this.getList()
+          }).catch((error)=>{
+            switch (error.response.status) {
+              case 401:
+                alert('Для совершения данного действия нужно авторизоваться')
+                break;
+            }
+          })
+        }else{
+          ApiService.put('EditPost', {
+                                                  id: this.editedItem.id,
+                                                  title: this.editedItem.title,
+                                                  text: this.editedItem.text,
+                                                  isEdited: true
+                                                  }).then(()=>{
+            this.$refs.infoSnack.showSnackbar('Пост успешно изменён','success', 'top')
+            this.clearDialog()
+            this.getList()
+          }).catch((error)=>{
+            switch (error.response.status) {
+              case 401:
+                alert('Для совершения данного действия нужно авторизоваться')
+                break;
+            }
+          })
+        }
+
       },
       clearDialog(){
         this.dialog.visible = false
-        this.dialog.content.title = ''
-        this.dialog.content.text = ''
+        this.editedItem.title = ''
+        this.editedItem.text = ''
       },
       getCountLiked(val){
         let likes = this.items.find(x=>x.id === val.id)?.likeCount
@@ -170,13 +223,19 @@
         })
       },
       confirmDelete(item){
-        this.$refs.confirmation.show(item)
+        this.$refs.confirmation.showConfirm(() => {
+                  ApiService.delete(`DeletePost/${item.id}`).then(()=>{
+                    this.$refs.infoSnack.showSnackbar('Пост успешно удалён','success', 'top')
+                    this.getList()
+                  })
+          },item
+        )
       },
       getList(){
-        this.$refs.progressLinear.show('Загрузка списка...')
+        this.$refs.progressLinear.showLinearProgress('Загрузка списка...')
         ApiService.get(`GetPosts`).then((response)=>{
           this.items = response.data
-          this.$refs.progressLinear.hide()
+          this.$refs.progressLinear.hideLinearProgress()
         })
       }
     }

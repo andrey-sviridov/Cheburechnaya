@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cheburechnaya_core.Data;
 
@@ -11,9 +12,10 @@ using cheburechnaya_core.Data;
 namespace cheburechnaya_core.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20220517093812_addCreatedUpdatedDate")]
+    partial class addCreatedUpdatedDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,14 +32,8 @@ namespace cheburechnaya_core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEdited")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -51,8 +47,6 @@ namespace cheburechnaya_core.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
                 });
@@ -109,16 +103,6 @@ namespace cheburechnaya_core.Migrations
                     b.ToTable("PostUser");
                 });
 
-            modelBuilder.Entity("cheburechnaya_core.Models.Post", b =>
-                {
-                    b.HasOne("cheburechnaya_core.Models.User", "Author")
-                        .WithMany("CreatedPosts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Author");
-                });
-
             modelBuilder.Entity("PostUser", b =>
                 {
                     b.HasOne("cheburechnaya_core.Models.Post", null)
@@ -132,11 +116,6 @@ namespace cheburechnaya_core.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("cheburechnaya_core.Models.User", b =>
-                {
-                    b.Navigation("CreatedPosts");
                 });
 #pragma warning restore 612, 618
         }

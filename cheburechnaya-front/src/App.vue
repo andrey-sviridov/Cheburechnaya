@@ -364,7 +364,7 @@
         },
         methods:{
             test(){
-                this.$refs.infoSnack.show('asda','success','topright')
+                this.$refs.infoSnack.showSnackbar('asda','success','topright')
 
             },
             refreshAuthorizedUser(){
@@ -406,7 +406,7 @@
             },
             register(){
                 ApiService.post('Register', this.registration).then(()=>{
-                    this.$refs.infoSnack.show('Регистрация успешно завершена','success','topright')
+                    this.$refs.infoSnack.showSnackbar('Регистрация успешно завершена','success','topright')
                     this.hideRegistrationDialog();
                 })
             },

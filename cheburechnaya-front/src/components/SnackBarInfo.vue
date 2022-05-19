@@ -1,5 +1,5 @@
 <template>
-    <v-snackbar style="padding-top: 60px"
+    <v-snackbar style="padding-top: 60px; "
                 v-model="isVisible"
                 :top="top"
                 :bottom="bottom"
@@ -29,13 +29,13 @@
             }
         },
         methods: {
-            show(message, type, position) {
+            showSnackbar(message, type, position) {
                 this.position(position)
                 this.type = type ? type : 'primary'
                 this.message = message
                 this.isVisible = true
             },
-            hide() {
+            hideSnackbar() {
                 this.isVisible = false
             },
             position(pos){
@@ -91,5 +91,5 @@
 </script>
 
 <style scoped>
-
+    
 </style>
