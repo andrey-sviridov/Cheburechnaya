@@ -18,7 +18,6 @@ namespace cheburechnaya_core.Controllers {
         [Route("/GetPosts")]
         [HttpGet]
         public List<PostDto> GetPosts() {
-            using ModelContext context = new ModelContext();
             var posts = context.Posts.Include(x => x.Users).ToList();
             var res = _mapper.Map<List<PostDto>>(posts).Select(x=> new PostDto{
                 Id = x.Id,
@@ -45,11 +44,12 @@ namespace cheburechnaya_core.Controllers {
         [HttpPost]
         [Authorize]
         public int NewPost([FromBody] EntityPostQuery request) {
-            ModelContext context = new ModelContext();
+            var context = new ModelContext();
 
             Post post = new Post() {
                 Title = request.Title,
                 Text = request.Text.Replace("\n", "<br>"),
+                Author = user
             };
             context.Posts.Add(post);
             context.SaveChanges();
@@ -66,8 +66,7 @@ namespace cheburechnaya_core.Controllers {
         [HttpPut]
         [Authorize]
         public int? EditPost([FromBody] EntityPostQuery request) {
-            ModelContext context = new ModelContext();
-
+            var context = new ModelContext();
             var post = context.Posts.SingleOrDefault(x => x.Id == request.Id);
             if(post != null) {
                 post.Title = request.Title;
@@ -90,12 +89,10 @@ namespace cheburechnaya_core.Controllers {
         [Authorize]
         public async Task<int?> LikePostAsync(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
-            ModelContext context = new ModelContext();
+            var context = new ModelContext();
 
             Post post = await context.Posts.Include(x=>x.Users).SingleOrDefaultAsync(x=>x.Id == id);
             if (post != null) {
-                User user = await context.Users.FindAsync(1);
-                if (post.Users.Contains(user)) return 0;
                 post.Users.Add(user);
                 context.SaveChanges();
             }
@@ -113,11 +110,10 @@ namespace cheburechnaya_core.Controllers {
         [Authorize]
         public async Task<int?> UnikePost(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
-            ModelContext context = new ModelContext();
+            var context = new ModelContext();
 
             Post post = await context.Posts.Include(x => x.Users).SingleOrDefaultAsync(x => x.Id == id);
             if (post != null) {
-                User user = await context.Users.FindAsync(1);
                 post.Users.Remove(user);
                 context.SaveChanges();
             }
@@ -136,7 +132,6 @@ namespace cheburechnaya_core.Controllers {
 
         public int? DeletePost(int id) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
-            ModelContext context = new ModelContext();
 
             Post post = context.Posts.SingleOrDefault(x => x.Id == id);
             if (post != null) {

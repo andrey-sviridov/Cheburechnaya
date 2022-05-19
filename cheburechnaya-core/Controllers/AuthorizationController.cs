@@ -28,7 +28,7 @@ namespace cheburechnaya_core.Controllers {
         [HttpPost]
         public JwtTokenInfo CheckValidJwt() {
             if (Request.Headers["Authorization"][0] != "Bearer undefined") {
-                var decode = new JwtSecurityTokenHandler().ReadJwtToken(Request.Headers["Authorization"][0].Replace("Bearer ", ""));
+                var decode = new JwtSecurityTokenHandler().ReadJwtToken(Request.Headers["Authorization"][0].Replace("Bearer ", "").Replace("\"", ""));
                 var userName = decode.Claims.First().Value;
 
                 if (decode.ValidTo < DateTime.UtcNow)
@@ -62,12 +62,12 @@ namespace cheburechnaya_core.Controllers {
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
                     claims: claims,
-                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)), // время действия токена 35 минут
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(35)), // время действия токена 35 минут
                     signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var writedToken = new JwtSecurityTokenHandler().WriteToken(jwt);
             JwtTokenInfo newJwtInfo = new JwtTokenInfo() {
                 ValidTo = jwt.ValidTo,
-                Token = writedToken,
+                Token = writedToken.Replace("\"", ""),
                 Status = 1
             };
             return newJwtInfo;

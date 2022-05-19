@@ -62,7 +62,7 @@ const AuthService = {
   },
 
   isLoggedOn() {
-    return localStorage.getItem('accessToken') && localStorage.getItem('userId')
+    return localStorage.getItem('accessToken') && localStorage.getItem('authorizedUser')
   }
 
 }

@@ -305,7 +305,7 @@
                 </v-form>
             </v-dialog>
 
-            <snack-bar-info ref="infoSnack" />
+            <snack-bar-info ref="snackbar" />
         </div>
     </v-app>
 </template>
@@ -318,6 +318,7 @@
         components: {SnackBarInfo},
         mounted() {
             this.refreshAuthorizedUser()
+
         },
         data(){
             return{
@@ -363,13 +364,33 @@
             }
         },
         methods:{
+            checkJwt(){
+                if(this.currentUser !== null) {
+                    ApiService.post('UpdateValidJwt').then((response) => {
+                        if (response.data.status === 1) {
+                            localStorage.setItem('accessToken', JSON.stringify(response.data.token))
+                            this.$refs.snackbar.showSnackbar(`токен обновлён до: ${response.data.validTo}`, 'success', 'topleft')
+                        } else if (response.data.status === 0) {
+                            localStorage.removeItem('accessToken')
+                            localStorage.removeItem('authorizedUser')
+                            this.currentUser = null
+                            this.$refs.snackbar.showSnackbar('токен очищен', 'success', 'topleft')
+                        }
+                    })
+                }
+            },
             test(){
-                this.$refs.infoSnack.showSnackbar('asda','success','topright')
+                this.$refs.snackbar.showSnackbar('asda','success','topright')
 
             },
-            refreshAuthorizedUser(){
+            refreshAuthorizedUser(isLogged){
                 this.currentUser = JSON.parse(localStorage.getItem('authorizedUser'))
                 if(this.currentUser === null) localStorage.removeItem('accessToken')
+
+                if(isLogged === undefined)
+                    this.checkJwt()
+                setInterval(this.checkJwt, 300000) //Интервал каждые 5 минут
+
             },
             clearAuthorizedUser(){
                 localStorage.removeItem('authorizedUser')
@@ -386,7 +407,7 @@
                     if(!response.data) return alert('Данный пользователь не зарегистрирован')
                     localStorage.setItem("authorizedUser", JSON.stringify(response.data))
                     localStorage.setItem("accessToken", JSON.stringify(response.data.token))
-                    this.refreshAuthorizedUser()
+                    this.refreshAuthorizedUser(true)
                 })
 
                 this.dialog = false;
@@ -406,7 +427,7 @@
             },
             register(){
                 ApiService.post('Register', this.registration).then(()=>{
-                    this.$refs.infoSnack.showSnackbar('Регистрация успешно завершена','success','topright')
+                    this.$refs.snackbar.showSnackbar('Регистрация успешно завершена','success','topright')
                     this.hideRegistrationDialog();
                 })
             },
