@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 namespace cheburechnaya_core.Controllers {
     [ApiController]
     public class PostsController : BaseController<PostsController> {
-        public PostsController(IMapper mapper, ILogger<PostsController> logger) : base(mapper, logger){}
+        public PostsController(IMapper mapper, ILogger<PostsController> logger) : base(mapper, logger){ }
 
         /// <summary>
         /// Схема получения списка постов
@@ -17,12 +17,12 @@ namespace cheburechnaya_core.Controllers {
         /// <returns>Список постов</returns>
         [Route("/GetPosts")]
         [HttpGet]
-        public List<PostDto> GetPosts() {
+        public List<PostDto> GetPosts([FromHeader] int UserId) {
             var posts = context.Posts.Include(x => x.Users).ToList();
             var res = _mapper.Map<List<PostDto>>(posts).Select(x=> new PostDto{
                 Id = x.Id,
                 LikeCount = x.Users.Count,
-                YouLiked = x.Users.Any(l => l.Id == 3),
+                YouLiked = x.Users.Any(l => l.Id == UserId),
                 Text = x.Text,
                 Title = x.Title,
                 Users = x.Users,
@@ -43,13 +43,13 @@ namespace cheburechnaya_core.Controllers {
         [Route("/NewPost")]
         [HttpPost]
         [Authorize]
-        public int NewPost([FromBody] EntityPostQuery request) {
+        public int NewPost([FromBody] EntityPostQuery request, [FromHeader] int UserId) {
             var context = new ModelContext();
 
             Post post = new Post() {
                 Title = request.Title,
                 Text = request.Text.Replace("\n", "<br>"),
-                Author = user
+                Author = context.Users.Find(UserId)
             };
             context.Posts.Add(post);
             context.SaveChanges();
@@ -87,13 +87,13 @@ namespace cheburechnaya_core.Controllers {
         [Route("/LikePost/{id}")]
         [HttpPut]
         [Authorize]
-        public async Task<int?> LikePostAsync(int id) {
+        public async Task<int?> LikePostAsync(int id, [FromHeader] int UserId) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
             var context = new ModelContext();
 
             Post post = await context.Posts.Include(x=>x.Users).SingleOrDefaultAsync(x=>x.Id == id);
             if (post != null) {
-                post.Users.Add(user);
+                post.Users.Add(context.Users.Find(UserId));
                 context.SaveChanges();
             }
 
@@ -108,13 +108,13 @@ namespace cheburechnaya_core.Controllers {
         [Route("/UnlikePost/{id}")]
         [HttpPut]
         [Authorize]
-        public async Task<int?> UnikePost(int id) {
+        public async Task<int?> UnikePost(int id, [FromHeader] int UserId) {
             if (id == 0 | id.GetType() != typeof(int)) return null;
             var context = new ModelContext();
 
             Post post = await context.Posts.Include(x => x.Users).SingleOrDefaultAsync(x => x.Id == id);
             if (post != null) {
-                post.Users.Remove(user);
+                post.Users.Remove(context.Users.Find(UserId));
                 context.SaveChanges();
             }
 

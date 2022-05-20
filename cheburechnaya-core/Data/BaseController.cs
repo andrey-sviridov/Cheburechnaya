@@ -11,10 +11,8 @@ namespace cheburechnaya_core.Data {
 
         private readonly ILogger<T> _logger;
         protected readonly IMapper _mapper;
-        protected readonly JwtSecurityToken? JwtInfo;
         protected readonly User user;
         protected readonly ModelContext context;
-        protected HttpRequest request;
 
         protected BaseController(IMapper mapper, ILogger<T> logger) {
             _mapper = mapper;

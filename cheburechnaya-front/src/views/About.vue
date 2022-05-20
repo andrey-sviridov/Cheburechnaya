@@ -58,7 +58,7 @@
         <v-card-actions>
           <v-btn
                   small
-                  @click="like(item)"
+                  @click="likeUnlike(item)"
                   v-bind:class="{likedClass: item.youLiked}"
                   class="light-blue--text transparent"
           >
@@ -212,13 +212,8 @@
         let likes = this.items.find(x=>x.id === val.id)?.likeCount
         return  likes === 0 ? '' : likes
       },
-      like(item){
-        ApiService.put(`LikePost/${item.id}`).then(()=>{
-          this.getList()
-        })
-      },
-      unlike(item){
-        ApiService.put(`UnlikePost/${item.id}`).then(()=>{
+      likeUnlike(item){
+        ApiService.put(`${item.youLiked ? 'UnlikePost' : 'LikePost'}/${item.id}`).then(()=>{
           this.getList()
         })
       },

@@ -22,8 +22,8 @@
                 <v-tab class="nav-btn" @click="$router.push({name: 'Main'})">
                     Главная
                 </v-tab>
-                <v-tab class="nav-btn" @click="$router.push({name: 'About'})">
-                    Биография
+                <v-tab class="nav-btn" @click="$router.push({name: 'Posts'})">
+                    Посты
                 </v-tab>
                 <v-tab class="nav-btn" @click="$router.push({name: 'Info'})">
                     Информация
@@ -389,12 +389,13 @@
 
                 if(isLogged === undefined)
                     this.checkJwt()
+
                 setInterval(this.checkJwt, 300000) //Интервал каждые 5 минут
 
             },
             clearAuthorizedUser(){
                 localStorage.removeItem('authorizedUser')
-                this.currentUser = null
+                window.location.reload()
             },
             validate () {
                 this.$refs.form.validate();

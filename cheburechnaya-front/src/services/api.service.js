@@ -10,11 +10,12 @@ const ApiService = {
 
     setHeaders() {
         const jwtToken = AuthService.getAccessToken()?.replaceAll('"','')
+        axios.defaults.headers.common["UserId"] = 0;
         axios.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
 
         if (AuthService.isLoggedOn()) {
-            axios.defaults.headers.common["CurrentUser"] = JSON.parse(localStorage.getItem("authorizedUser")).id
-            console.log(axios.defaults.headers.common["CurrentUser"])
+            axios.defaults.headers.common["UserId"] = JSON.parse(localStorage.getItem("authorizedUser"))?.id
+            console.log(axios.defaults.headers.common["UserId"])
         }
     },
 
