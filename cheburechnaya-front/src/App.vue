@@ -43,24 +43,57 @@
                     Войти
                 </v-btn>
                 <div v-if="this.currentUser != null">
-                    <span>
-                        Привет, {{this.currentUser.firstName}}!
-                    </span>
-                    <v-avatar
-                            style="cursor: default;"
-                            color="primary"
-                            class="ml-5 mr-5"
+
+                    <v-menu
+                            bottom
+                            rounded
+                            offset-y
                     >
-                        {{this.currentUser.firstName !== undefined ? (this.currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
-                    </v-avatar>
-                    <v-btn
-                            @click="clearAuthorizedUser"
-                            class="mr-3"
-                            outlined
-                    >
-                        Выйти
-                        <v-icon>mdi-logout</v-icon>
-                    </v-btn>
+                        <template v-slot:activator="{ on }">
+                            <v-btn height="55px"
+                                   v-on="on"
+                                   rounded
+                            >
+                                <div style="margin: -5px">
+                                    <span>
+                                        Привет, {{currentUser.firstName}}!
+                                    </span>
+                                    <v-avatar
+                                            color="primary"
+                                    >
+                                        {{currentUser.firstName !== undefined ? (currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
+                                    </v-avatar>
+                                </div>
+                            </v-btn>
+                        </template>
+                        <v-list-item-content
+                                style="border: rgba(255,255,255,0.5) solid 1px; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px)">
+                            <div class="text-center">
+                                <h3>{{`${currentUser.firstName} ${currentUser.lastName}`}}</h3>
+                                <p class="text-caption mt-1">
+                                    {{currentUser.userName}}
+                                </p>
+                                <v-divider/>
+                                <v-btn
+                                        class="mr-auto v-picker--full-width primary--text"
+                                        link
+
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                    Настройки профиля
+                                </v-btn>
+                                <v-btn
+                                        @click="clearAuthorizedUser"
+                                        class="mr-auto v-picker--full-width red--text"
+                                        link
+                                >
+                                    <v-icon>mdi-logout</v-icon>
+                                    Выйти из профиля
+                                </v-btn>
+                            </div>
+                        </v-list-item-content>
+                    </v-menu>
+
                 </div>
             </v-container>
         </v-app-bar>
@@ -364,6 +397,9 @@
             }
         },
         methods:{
+            getInfo(){
+              return `${this.currentUser.firstName} ${this.currentUser.lastName}`
+            },
             checkJwt(){
                 if(this.currentUser !== null) {
                     ApiService.post('UpdateValidJwt').then((response) => {
@@ -493,8 +529,8 @@
     @import "styles/customVariables.css";
 
     body{
-        background: url("../src/assets/wall.jpg") no-repeat fixed;
-        background-size: 100%;
+        background: url("https://images.wallpaperscraft.ru/image/single/zakat_reka_gorizont_164743_1920x1080.jpg") no-repeat fixed;
+        background-size: cover;
         padding: 0 10% 5% 10%;
     }
 </style>

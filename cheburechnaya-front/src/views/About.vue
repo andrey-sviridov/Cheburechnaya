@@ -28,7 +28,7 @@
 
             <v-list class="menu">
               <v-list-item link>
-                <v-list-item-title
+                <v-list-item-title class="primary--text"
                   @click="editPost(item)"
                 >
                   Изменить
@@ -36,7 +36,7 @@
               </v-list-item>
               <v-list-item link
                            @click="confirmDelete(item)">
-                <v-list-item-title
+                <v-list-item-title class="red--text"
                 >
                   Удалить
                 </v-list-item-title>
@@ -45,7 +45,7 @@
           </v-menu>
         </v-row>
         <v-card-text
-                class="card-status-text"
+                class="card-status-text grey--text"
         >
           {{getAuthorInfo(item)}}
         </v-card-text>
