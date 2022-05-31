@@ -2,6 +2,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Info from "@/views/Info";
 import About from "@/views/About";
+import Posts from "@/views/Posts";
 
 
 export default new VueRouter({
@@ -14,8 +15,8 @@ export default new VueRouter({
             ]
         },
         {
-            path: '/about',
-            name: 'Posts',
+            path: '/test',
+            name: 'Test',
             component: About
         },
         {
@@ -24,9 +25,9 @@ export default new VueRouter({
             component: Info
         },
         {
-            path: '/test',
-            name: 'Test',
-            component: () => import('@/views/Test.vue'),
+            path: '/posts',
+            name: 'Posts',
+            component: Posts,
             meta: {
                 layout: 'blank'
             },
