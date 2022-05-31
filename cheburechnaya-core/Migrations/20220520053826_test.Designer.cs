@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cheburechnaya_core.Data;
 
@@ -11,9 +12,10 @@ using cheburechnaya_core.Data;
 namespace cheburechnaya_core.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20220520053826_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,7 @@ namespace cheburechnaya_core.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("cheburechnaya_core.Models.User", b =>
@@ -97,22 +99,22 @@ namespace cheburechnaya_core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PostUser", b =>
                 {
-                    b.Property<int>("LikedUsersId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PostsId")
                         .HasColumnType("int");
 
-                    b.HasKey("LikedUsersId", "PostsId");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PostsId");
+                    b.HasKey("PostsId", "UsersId");
 
-                    b.ToTable("PostUser", (string)null);
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("PostUser");
                 });
 
             modelBuilder.Entity("cheburechnaya_core.Models.Post", b =>
@@ -127,15 +129,15 @@ namespace cheburechnaya_core.Migrations
 
             modelBuilder.Entity("PostUser", b =>
                 {
-                    b.HasOne("cheburechnaya_core.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("LikedUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("cheburechnaya_core.Models.Post", null)
                         .WithMany()
                         .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("cheburechnaya_core.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

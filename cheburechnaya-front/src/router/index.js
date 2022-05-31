@@ -15,7 +15,7 @@ export default new VueRouter({
         },
         {
             path: '/about',
-            name: 'About',
+            name: 'Posts',
             component: About
         },
         {

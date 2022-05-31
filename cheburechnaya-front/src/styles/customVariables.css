@@ -9,7 +9,7 @@
 }
 .v-data-table, .v-card {
     margin: 0 0 10px 0;
-    background: rgba(0, 0, 0, 0.4) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
     outline: rgba(255, 255, 255, 0.3) solid 2px !important;
 }
 .v-tab{

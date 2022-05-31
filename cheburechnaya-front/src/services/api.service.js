@@ -1,6 +1,6 @@
 import axios from "axios";
 import AuthService from "./auth.service";
-import WorkingContext from "../store/WorkingContext";
+//import WorkingContext from "../store/WorkingContext";
 
 const ApiService = {
 
@@ -10,11 +10,12 @@ const ApiService = {
 
     setHeaders() {
         const jwtToken = AuthService.getAccessToken()?.replaceAll('"','')
+        axios.defaults.headers.common["UserId"] = 0;
         axios.defaults.headers.common["Authorization"] = `Bearer ${jwtToken}`;
 
         if (AuthService.isLoggedOn()) {
-            const wc = WorkingContext.getContext()
-            axios.defaults.headers.common["Work-Context"] = JSON.stringify(wc);
+            axios.defaults.headers.common["UserId"] = JSON.parse(localStorage.getItem("authorizedUser"))?.id
+            console.log(axios.defaults.headers.common["UserId"])
         }
     },
 

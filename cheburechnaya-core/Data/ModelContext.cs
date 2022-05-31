@@ -10,27 +10,27 @@ namespace cheburechnaya_core.Data {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Post>().HasOne(x => x.Author).WithMany(x => x.CreatedPosts).HasForeignKey("AuthorId").OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Post>().HasOne(x => x.Author).WithMany(x => x.CreatedPosts).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Post>().HasMany(x => x.Users).WithMany(x => x.Posts);
 
             //modelBuilder.ApplyConfiguration(new PostConfiguration());
 
         }
         public override int SaveChanges() {
-            foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity.GetType().GetProperty("CreatedDate") != null)) {
-                if (entry.State == EntityState.Added) {
-                    entry.Property("CreatedDate").CurrentValue = DateTime.Now;
-                } else if (entry.State == EntityState.Modified) {
-                    // Ignore the CreatedTime updates on Modified entities. 
-                    entry.Property("CreatedDate").IsModified = false;
-                }
-            }
+            foreach (var changedEntity in ChangeTracker.Entries()) {
+                if (changedEntity.Entity is IEntityDate entity) {
+                    switch (changedEntity.State) {
+                        case EntityState.Added:
+                            entity.CreatedDate = DateTime.Now;
+                            entity.UpdatedDate = DateTime.Now;
+                            break;
 
-            foreach (var entry in ChangeTracker.Entries().Where(
-                e =>
-                    e.Entity.GetType().GetProperty("UpdatedDate") != null &&
-                    e.State == EntityState.Modified ||
-                    e.State == EntityState.Added)) {
-                entry.Property("UpdatedDate").CurrentValue = DateTime.Now;
+                        case EntityState.Modified:
+                            //Entry(entity).Property(x => x.CreatedDate).IsModified = false;
+                            entity.UpdatedDate = DateTime.Now;
+                            break;
+                    }
+                }
             }
 
             return base.SaveChanges();

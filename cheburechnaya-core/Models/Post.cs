@@ -12,7 +12,7 @@ namespace cheburechnaya_core.Models {
         public string? Title { get; set; }
         [Required]
         public string? Text { get; set; }
-        public  List<User> Users { get; set; }
+        public  List<User> LikedUsers { get; set; }
         public  User? Author { get; set; }
         public bool IsEdited { get; set; }
     }

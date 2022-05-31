@@ -22,8 +22,8 @@
                 <v-tab class="nav-btn" @click="$router.push({name: 'Main'})">
                     Главная
                 </v-tab>
-                <v-tab class="nav-btn" @click="$router.push({name: 'About'})">
-                    Биография
+                <v-tab class="nav-btn" @click="$router.push({name: 'Posts'})">
+                    Посты
                 </v-tab>
                 <v-tab class="nav-btn" @click="$router.push({name: 'Info'})">
                     Информация
@@ -43,24 +43,57 @@
                     Войти
                 </v-btn>
                 <div v-if="this.currentUser != null">
-                    <span>
-                        Привет, {{this.currentUser.firstName}}!
-                    </span>
-                    <v-avatar
-                            style="cursor: default;"
-                            color="primary"
-                            class="ml-5 mr-5"
+
+                    <v-menu
+                            bottom
+                            rounded
+                            offset-y
                     >
-                        {{this.currentUser.firstName !== undefined ? (this.currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
-                    </v-avatar>
-                    <v-btn
-                            @click="clearAuthorizedUser"
-                            class="mr-3"
-                            outlined
-                    >
-                        Выйти
-                        <v-icon>mdi-logout</v-icon>
-                    </v-btn>
+                        <template v-slot:activator="{ on }">
+                            <v-btn height="55px"
+                                   v-on="on"
+                                   rounded
+                            >
+                                <div style="margin: -5px">
+                                    <span>
+                                        Привет, {{currentUser.firstName}}!
+                                    </span>
+                                    <v-avatar
+                                            color="primary"
+                                    >
+                                        {{currentUser.firstName !== undefined ? (currentUser.firstName.slice(0,1)).toUpperCase() : ''}}
+                                    </v-avatar>
+                                </div>
+                            </v-btn>
+                        </template>
+                        <v-list-item-content
+                                style="border: rgba(255,255,255,0.5) solid 1px; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px)">
+                            <div class="text-center">
+                                <h3>{{`${currentUser.firstName} ${currentUser.lastName}`}}</h3>
+                                <p class="text-caption mt-1">
+                                    {{currentUser.userName}}
+                                </p>
+                                <v-divider/>
+                                <v-btn
+                                        class="mr-auto v-picker--full-width primary--text"
+                                        link
+
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                    Настройки профиля
+                                </v-btn>
+                                <v-btn
+                                        @click="clearAuthorizedUser"
+                                        class="mr-auto v-picker--full-width red--text"
+                                        link
+                                >
+                                    <v-icon>mdi-logout</v-icon>
+                                    Выйти из профиля
+                                </v-btn>
+                            </div>
+                        </v-list-item-content>
+                    </v-menu>
+
                 </div>
             </v-container>
         </v-app-bar>
@@ -305,7 +338,7 @@
                 </v-form>
             </v-dialog>
 
-            <snack-bar-info ref="infoSnack" />
+            <snack-bar-info ref="snackbar" />
         </div>
     </v-app>
 </template>
@@ -318,6 +351,7 @@
         components: {SnackBarInfo},
         mounted() {
             this.refreshAuthorizedUser()
+
         },
         data(){
             return{
@@ -363,17 +397,41 @@
             }
         },
         methods:{
+            getInfo(){
+              return `${this.currentUser.firstName} ${this.currentUser.lastName}`
+            },
+            checkJwt(){
+                if(this.currentUser !== null) {
+                    ApiService.post('UpdateValidJwt').then((response) => {
+                        if (response.data.status === 1) {
+                            localStorage.setItem('accessToken', JSON.stringify(response.data.token))
+                            this.$refs.snackbar.showSnackbar(`токен обновлён до: ${response.data.validTo}`, 'success', 'topleft')
+                        } else if (response.data.status === 0) {
+                            localStorage.removeItem('accessToken')
+                            localStorage.removeItem('authorizedUser')
+                            this.currentUser = null
+                            this.$refs.snackbar.showSnackbar('токен очищен', 'success', 'topleft')
+                        }
+                    })
+                }
+            },
             test(){
-                this.$refs.infoSnack.showSnackbar('asda','success','topright')
+                this.$refs.snackbar.showSnackbar('asda','success','topright')
 
             },
-            refreshAuthorizedUser(){
+            refreshAuthorizedUser(isLogged){
                 this.currentUser = JSON.parse(localStorage.getItem('authorizedUser'))
                 if(this.currentUser === null) localStorage.removeItem('accessToken')
+
+                if(isLogged === undefined)
+                    this.checkJwt()
+
+                setInterval(this.checkJwt, 300000) //Интервал каждые 5 минут
+
             },
             clearAuthorizedUser(){
                 localStorage.removeItem('authorizedUser')
-                this.currentUser = null
+                window.location.reload()
             },
             validate () {
                 this.$refs.form.validate();
@@ -386,7 +444,7 @@
                     if(!response.data) return alert('Данный пользователь не зарегистрирован')
                     localStorage.setItem("authorizedUser", JSON.stringify(response.data))
                     localStorage.setItem("accessToken", JSON.stringify(response.data.token))
-                    this.refreshAuthorizedUser()
+                    this.refreshAuthorizedUser(true)
                 })
 
                 this.dialog = false;
@@ -406,7 +464,7 @@
             },
             register(){
                 ApiService.post('Register', this.registration).then(()=>{
-                    this.$refs.infoSnack.showSnackbar('Регистрация успешно завершена','success','topright')
+                    this.$refs.snackbar.showSnackbar('Регистрация успешно завершена','success','topright')
                     this.hideRegistrationDialog();
                 })
             },
@@ -471,8 +529,8 @@
     @import "styles/customVariables.css";
 
     body{
-        background: url("../src/assets/wall.jpg") no-repeat fixed;
-        background-size: 100%;
+        background: url("https://images.wallpaperscraft.ru/image/single/zakat_reka_gorizont_164743_1920x1080.jpg") no-repeat fixed;
+        background-size: cover;
         padding: 0 10% 5% 10%;
     }
 </style>

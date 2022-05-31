@@ -28,7 +28,7 @@
 
             <v-list class="menu">
               <v-list-item link>
-                <v-list-item-title
+                <v-list-item-title class="primary--text"
                   @click="editPost(item)"
                 >
                   Изменить
@@ -36,7 +36,7 @@
               </v-list-item>
               <v-list-item link
                            @click="confirmDelete(item)">
-                <v-list-item-title
+                <v-list-item-title class="red--text"
                 >
                   Удалить
                 </v-list-item-title>
@@ -45,7 +45,7 @@
           </v-menu>
         </v-row>
         <v-card-text
-                class="card-status-text"
+                class="card-status-text grey--text"
         >
           {{getAuthorInfo(item)}}
         </v-card-text>
@@ -58,7 +58,7 @@
         <v-card-actions>
           <v-btn
                   small
-                  @click="like(item)"
+                  @click="likeUnlike(item)"
                   v-bind:class="{likedClass: item.youLiked}"
                   class="light-blue--text transparent"
           >
@@ -212,13 +212,8 @@
         let likes = this.items.find(x=>x.id === val.id)?.likeCount
         return  likes === 0 ? '' : likes
       },
-      like(item){
-        ApiService.put(`LikePost/${item.id}`).then(()=>{
-          this.getList()
-        })
-      },
-      unlike(item){
-        ApiService.put(`UnlikePost/${item.id}`).then(()=>{
+      likeUnlike(item){
+        ApiService.put(`${item.youLiked ? 'UnlikePost' : 'LikePost'}/${item.id}`).then(()=>{
           this.getList()
         })
       },
