@@ -67,7 +67,8 @@
                             </v-btn>
                         </template>
                         <v-list-item-content
-                                style="border: rgba(255,255,255,0.5) solid 1px; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px)">
+                                class="mt-1"
+                                style="border: rgba(255,255,255,0.5) solid 2px; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px)">
                             <div class="text-center">
                                 <h3>{{`${currentUser.firstName} ${currentUser.lastName}`}}</h3>
                                 <p class="text-caption mt-1">
