@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Info from "@/views/Info";
 import About from "@/views/About";
 import Posts from "@/views/Posts";
+import Test from "../views/Test";
 
 
 export default new VueRouter({
@@ -17,12 +18,17 @@ export default new VueRouter({
         {
             path: '/test',
             name: 'Test',
-            component: About
+            component: Test
         },
         {
             path: '/info',
             name: 'Info',
             component: Info
+        },
+        {
+            path: '/about',
+            name: 'About',
+            component: About
         },
         {
             path: '/posts',
