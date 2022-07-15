@@ -12,8 +12,15 @@ namespace cheburechnaya_core.Models {
         public string? Title { get; set; }
         [Required]
         public string? Text { get; set; }
+        public PostType Type { get; set; }
         public  List<User> LikedUsers { get; set; }
         public  User? Author { get; set; }
         public bool IsEdited { get; set; }
+    }
+
+    public enum PostType {
+        Verse = 1,
+        Story = 2,
+        Other = 3
     }
 }

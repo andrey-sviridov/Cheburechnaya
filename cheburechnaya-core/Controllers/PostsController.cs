@@ -33,11 +33,12 @@ namespace cheburechnaya_core.Controllers {
 
             return res;
         }
-
+        
         /// <summary>
         /// Схема создания поста
         /// </summary>
-        /// <param name="Создаваемый объект"></param>
+        /// <param name="request">Создаваемый объект</param>
+        /// <param name="UserId">Текущий пользователь</param>
         /// <returns></returns>
         [Route("/NewPost")]
         [HttpPost]
@@ -60,7 +61,7 @@ namespace cheburechnaya_core.Controllers {
         /// <summary>
         /// Схема редактирования поста
         /// </summary>
-        /// <param name="Редактируемый объект с запроса"></param>
+        /// <param name="request">Редактируемый объект с запроса</param>
         /// <returns></returns>
         [Route("/EditPost")]
         [HttpPut]
@@ -82,7 +83,7 @@ namespace cheburechnaya_core.Controllers {
         /// <summary>
         /// Схема лайка поста
         /// </summary>
-        /// <param name="Идентификатор поста(id)"></param>
+        /// <param name="UserId">Идентификатор поста(id)</param>
         /// <returns></returns>
         [Route("/LikePost/{id}")]
         [HttpPut]
@@ -113,7 +114,8 @@ namespace cheburechnaya_core.Controllers {
         /// <summary>
         /// Схема дизлайка поста
         /// </summary>
-        /// <param name="Идентификатор поста(id)"></param>
+        /// <param name="id">Идентификатор поста(id)</param>
+        /// <param name="UserId">Текущий пользователь</param>
         /// <returns></returns>
         [Route("/UnlikePost/{id}")]
         [HttpPut]
@@ -134,7 +136,7 @@ namespace cheburechnaya_core.Controllers {
         /// <summary>
         /// Схема удаления поста
         /// </summary>
-        /// <param name="Идентификатор поста(id)"></param>
+        /// <param name="id">Идентификатор поста(id)</param>
         /// <returns></returns>
         [Route("/DeletePost/{id}")]
         [HttpDelete]

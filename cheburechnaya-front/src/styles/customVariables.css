@@ -8,9 +8,9 @@
     background: rgba(59, 59, 59, 0.27);
 }
 .v-data-table, .v-card {
-    margin: 0 0 10px 0;
+    margin: 10px 0;
     background: rgba(0, 0, 0, 0.6) !important;
-    outline: rgba(255, 255, 255, 0.3) solid 2px !important;
+    outline: rgba(255, 255, 255, 0.2) solid 2px !important;
 }
 .v-tab{
     color: #e8e8e8 !important;
@@ -20,11 +20,11 @@
 }
 .card-status-text{
     margin-top: -35px !important;
-    padding-left: 25px !important;
+    //padding-left: 25px !important;
     font-size: 12px !important;
 }
 .card-text{
-    padding-left: 40px !important;
+    padding-left: 30px !important;
     color: white !important;
 }
 .menu{
