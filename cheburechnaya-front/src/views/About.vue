@@ -26,7 +26,7 @@
               </v-btn>
             </template>
 
-            <v-list class="menu">
+            <v-list class="menu  text-center">
               <v-list-item link>
                 <v-list-item-title class="primary--text"
                   @click="editPost(item)"
@@ -34,8 +34,7 @@
                   Изменить
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item link
-                           @click="confirmDelete(item)">
+              <v-list-item link @click="confirmDelete(item)">
                 <v-list-item-title class="red--text"
                 >
                   Удалить
