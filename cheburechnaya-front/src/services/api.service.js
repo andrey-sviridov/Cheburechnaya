@@ -6,12 +6,6 @@ const ApiService = {
 
     init(baseURL) {
         axios.defaults.baseURL = baseURL;
-        axios.interceptors.request.use(function(config) {
-            // change the url scheme from http to https
-            config.url = config.url.replace('https://', 'http://')
-
-            return config
-        })
     },
 
     setHeaders() {
