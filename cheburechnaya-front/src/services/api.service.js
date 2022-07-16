@@ -21,10 +21,7 @@ const ApiService = {
 
     get(resource, config) {
         this.setHeaders()
-        return axios.get(`/${resource}` , { transformRequest: [(data, headers) => {
-                delete headers.common['X-Requested-With'];
-                return data
-            }] },config);
+        return axios.get(`/${resource}` , config);
     },
 
     post(resource, data) {
