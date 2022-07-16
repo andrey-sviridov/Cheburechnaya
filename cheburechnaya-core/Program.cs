@@ -47,7 +47,7 @@ static void ConfigureCorsPolicy(WebApplicationBuilder builder) {
 		opt.AddPolicy("CorsPolicy", policy => {
 			policy.AllowAnyHeader()
 				.AllowAnyMethod()
-				.WithOrigins("http://localhost:8080")
+				.WithOrigins("http://localhost:8080", "https://cheburechnaya.vercel.app/")
 				.AllowCredentials();
 		});
 	});
