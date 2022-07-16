@@ -38,7 +38,8 @@ namespace cheburechnaya_core.Data {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             optionsBuilder
                 //.UseLazyLoadingProxies()
-                .UseSqlServer("Server=localhost;Database=CheburechnayaDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+                //.UseSqlServer("Server=localhost;Database=CheburechnayaDb;Trusted_Connection=True;MultipleActiveResultSets=true");
+                .UseSqlServer("Data Source=SQL5080.site4now.net;Initial Catalog=db_a8a395_cheburechnayadb;User Id=db_a8a395_cheburechnayadb_admin;Password=asf6axj2");
         }
     }
 }

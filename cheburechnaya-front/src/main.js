@@ -11,9 +11,9 @@ import moment from "moment-with-locales-es6";
 
 Vue.config.productionTip = false
 Vue.prototype.$valid = validations;
-Vue.prototype.$url = 'https://localhost:7065/';
+Vue.prototype.$url = 'http://northarion-001-site1.ctempurl.com/';
 
-ApiService.init('https://localhost:7065/')
+ApiService.init('http://northarion-001-site1.ctempurl.com/')
 
 Vue.use(VueRouter);
 Vue.use(VueAxios,axios)
