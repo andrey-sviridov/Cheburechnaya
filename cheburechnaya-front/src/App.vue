@@ -3,7 +3,6 @@
         <v-app-bar
                 app
                 color="transparent"
-                style="backdrop-filter: blur(2px)"
                 flat
         >
             <v-container class="py-0 fill-height">
@@ -68,9 +67,9 @@
                         </template>
                         <v-list-item-content
                                 class="mt-1"
-                                style="border: rgba(255,255,255,0.5) solid 2px; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px)">
+                                style="border: rgba(255,255,255,0.5) solid 1px; background-color: rgba(0,0,0,0.7);">
                             <div class="text-center">
-                                <h3>{{`${currentUser.firstName} ${currentUser.lastName}`}}</h3>
+                                <h3 style="font-size: 17px; font-weight: normal">{{`${currentUser.firstName} ${currentUser.lastName}`}}</h3>
                                 <p class="text-caption mt-1">
                                     {{currentUser.userName}}
                                 </p>
