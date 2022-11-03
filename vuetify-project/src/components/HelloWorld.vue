@@ -12,22 +12,18 @@
         <span style="margin: 0 15px 0 5px">
           Чебуречная на закате
         </span>
-        <v-divider vertical inset/>
 
-        <v-btn
-          :height="40"
-          prepend-icon="mdi-home"
+        <template
+        v-for="el in this.appBarItems"
         >
-          Главная
-        </v-btn>
-        <v-divider vertical inset/>
-        <v-btn
+          <v-divider vertical inset/>
+          <v-btn
           :height="40"
-          prepend-icon="mdi-home"
-        >
-          Посты
-        </v-btn>
-        <v-divider vertical inset/>
+          :prepend-icon=el.icon
+          >
+            {{el.name}}
+          </v-btn>
+        </template>
 
         <v-spacer />
         <v-btn
@@ -45,8 +41,26 @@
   </v-container>
 </template>
 
-<script setup>
-  //
+<script>
+  export default{
+    name: 'main-page',
+    data(){
+      return{
+        appBarItems:[
+          {
+            icon: 'mdi-home',
+            name: 'Главная',
+            route: '/'
+          },
+          {
+            icon: 'mdi-text',
+            name: 'Посты',
+            route: '/posts'
+          },
+        ]
+    };
+    }
+  }
 </script>
 <style type="text/css" scoped>
 
