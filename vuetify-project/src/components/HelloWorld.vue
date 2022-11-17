@@ -2,6 +2,7 @@
   <v-container class="fill-height">
     <v-responsive class="d-flex align-center text-center fill-height">
       <v-app-bar
+        style="background-color: rgba(255,255,255, 0.8)"
         :elevation="2"
         :height="50"
       >
@@ -14,7 +15,7 @@
         </span>
 
         <template
-        v-for="el in this.appBarItems"
+          v-for="el in this.appBarItems"
         >
           <v-divider vertical inset/>
           <v-btn
@@ -30,6 +31,7 @@
           :height="40"
           variant="outlined"
           prepend-icon="mdi-login"
+          @click="showWindow"
         >
           Авторизация
         </v-btn>
@@ -37,15 +39,20 @@
       <transition name="fade">
         <router-view class="router-view"/>
       </transition>
+      <confirmation-dialog ref="confirmation" />
     </v-responsive>
   </v-container>
 </template>
 
 <script>
+import AlertWindow from "@/components/AlertWindow";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
   export default{
     name: 'main-page',
+    components: {ConfirmationDialog, AlertWindow},
     data(){
       return{
+        showWin: false,
         appBarItems:[
           {
             icon: 'mdi-home',
@@ -59,9 +66,14 @@
           },
         ]
     };
+    },
+    methods:{
+      showWindow(){
+        this.$refs.confirmation.showConfirm(null, {title: 'Тест'})
+      }
     }
   }
 </script>
-<style type="text/css" scoped>
+<style scoped>
 
 </style>
