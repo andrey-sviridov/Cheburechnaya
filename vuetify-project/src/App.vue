@@ -9,9 +9,9 @@
 <script setup>
   import HelloWorld from '@/components/HelloWorld.vue'
 </script>
-<style scoped>
-  .background{
-    background: url("assets/background.jpg") no-repeat fixed;
-    background-size: cover;
-  }
+<style type="text/css" scoped>
+.background{
+  background: url("assets/background.jpg") no-repeat ;
+  background-size: cover;
+}
 </style>

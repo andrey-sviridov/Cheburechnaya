@@ -2,9 +2,9 @@
   <v-container class="fill-height">
     <v-responsive class="d-flex align-center text-center fill-height">
       <v-app-bar
-        style="background-color: rgba(255,255,255, 0.8)"
         :elevation="2"
         :height="50"
+        style="background-color: rgba(255,255,255, 0.5)"
       >
         <v-avatar
         >
@@ -31,7 +31,7 @@
           :height="40"
           variant="outlined"
           prepend-icon="mdi-login"
-          @click="showWindow"
+          @click="this.$refs.alert.showAlert()"
         >
           Авторизация
         </v-btn>
@@ -39,17 +39,16 @@
       <transition name="fade">
         <router-view class="router-view"/>
       </transition>
-      <confirmation-dialog ref="confirmation" />
     </v-responsive>
   </v-container>
+  <alert-window ref="alert" />
 </template>
 
 <script>
-import AlertWindow from "@/components/AlertWindow";
-import ConfirmationDialog from "@/components/ConfirmationDialog";
+  import AlertWindow from "@/components/AlertWindow";
   export default{
     name: 'main-page',
-    components: {ConfirmationDialog, AlertWindow},
+    components: {AlertWindow},
     data(){
       return{
         showWin: false,
@@ -74,6 +73,3 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
     }
   }
 </script>
-<style scoped>
-
-</style>

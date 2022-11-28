@@ -1,71 +1,52 @@
 <template>
-        <v-dialog
-                class="mainDiv"
-                v-model="show"
-                width="500"
-        >
-            <v-form ref="form"
-            >
-                <v-card-title>
-                    <slot name="title">
-
-                    </slot>
-                    <v-spacer/>
-
-                    <v-icon
-                            @click="changeVisible(false)"
-                    >
-                        mdi-close
-                    </v-icon>
-                </v-card-title>
-                <v-divider />
-
-                <v-card-text
-                >
-                    <slot name="body">
-
-                    </slot>
-                </v-card-text
-                >
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <slot name="buttons" :changeVisible="changeVisible">
-
-                    </slot>
-                    <v-btn >TEST</v-btn>
-                </v-card-actions>
-            </v-form>
-        </v-dialog>
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+    >
+      <v-card style="text-align: center; background-color: rgba(255,255,255, 0.1); color: white; width: 60%; align-self: center; margin: 50px 50px" >
+        <v-card-title>
+          Информационное окно
+        </v-card-title>
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </v-card-text>
+        <v-card-actions style="flex-direction: column">
+          <v-btn
+            color="primary"
+            variant="elevated"
+            @click="dialog = false"
+          >
+            Agree
+          </v-btn>
+          <v-btn
+            @click="dialog = false"
+          >
+            Disagree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "alert-window",
-        props:{
-            show: Boolean,
-            func: Function
-        },
-        data(){
-          return{
-
-          }
-        },
-        beforeDestroy() {
-            this.show = false
-        },
-        methods:{
-            changeVisible(val){
-                this.show = val
-            },
-            login(){
-                alert('login clicked')
-            }
-        }
+export default {
+  name: "AlertWindow",
+  data () {
+    return {
+      dialog: false,
     }
+  },
+  methods:{
+    showAlert(){
+      this.dialog = true;
+    },
+    hideAlert(){
+      this.dialog = false
+    }
+  }
+}
 </script>
 
 <style scoped>
-    .mainDiv{
-        height: auto;
-    }
 </style>
