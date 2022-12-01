@@ -31,9 +31,17 @@
           :height="40"
           variant="outlined"
           prepend-icon="mdi-login"
-          @click="this.$refs.alert.showAlert()"
+          @click="this.$refs.confirmation.showConfirm()"
         >
           Авторизация
+        </v-btn>
+        <v-btn
+          :height="40"
+          variant="outlined"
+          prepend-icon="mdi-login"
+          @click="this.$refs.formDialog.showConfirm()"
+        >
+          Форма
         </v-btn>
       </v-app-bar>
       <transition name="fade">
@@ -41,14 +49,40 @@
       </transition>
     </v-responsive>
   </v-container>
-  <alert-window ref="alert" />
+  <confirmation-dialog ref="confirmation" />
+  <form-dialog ref="formDialog" :width-form="90">
+    <template v-slot:title>
+      Форма регистрации
+    </template>
+    <template v-slot:body >
+      <v-autocomplete label="Логин"/>
+      <v-autocomplete label="Пароль"/>
+    </template>
+    <template v-slot:actions>
+      <v-btn
+        @click="this.$refs.formDialog.hideConfirm()"
+        variant="flat"
+        color="success"
+      >
+        Зарегистрироваться
+      </v-btn>
+      <v-spacer/>
+      <v-btn
+        @click="this.$refs.formDialog.hideConfirm()"
+      >
+        Закрыть
+      </v-btn>
+    </template>
+  </form-dialog>
 </template>
 
 <script>
   import AlertWindow from "@/components/AlertWindow";
+  import ConfirmationDialog from "@/components/ConfirmationDialog";
+  import FormDialog from "@/components/FormDialog";
   export default{
     name: 'main-page',
-    components: {AlertWindow},
+    components: {FormDialog, ConfirmationDialog, AlertWindow},
     data(){
       return{
         showWin: false,

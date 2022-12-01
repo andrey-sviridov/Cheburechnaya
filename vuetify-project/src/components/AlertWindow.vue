@@ -1,11 +1,14 @@
 <template>
-    <v-dialog v-model="dialog" style="text-align: center; color: white;"  transition="slide-y-reverse-transition">
+    <v-dialog v-model="dialog" style="text-align: center; color: white; backdrop-filter: blur(0px)"  transition="slide-y-reverse-transition">
       <v-card-title class="fontSettings" style=" position:relative;">
         Подтверждение действия
       </v-card-title>
-      <v-card-text
-        style="padding: 30px 0 30px; "
-      >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</v-card-text>
+      <div style="width: 60%; align-self: center">
+        <v-card-text
+          style="padding: 30px 0 30px; "
+        >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</v-card-text>
+
+      </div>
       <v-card-actions style="justify-content: center">
         <v-btn
           variant="flat"
