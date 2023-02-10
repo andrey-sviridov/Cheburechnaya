@@ -1,6 +1,6 @@
 <template>
-  <v-dialog :style="widthForm" v-model="dialog" style="text-align: center; color: white;"  transition="slide-y-reverse-transition" persistent>
-    <v-card-title class="fontSettings" style=" position:relative;">
+  <v-dialog v-model="dialog" :style="computedWidthForm" style="text-align: center; color: white;" transition="slide-y-reverse-transition" persistent>
+    <v-card-title class="fontSettings" style="position:relative;">
       <slot name="title" />
     </v-card-title>
     <div style="align-self: center; width: 100%" >
@@ -16,9 +16,9 @@
 export default {
   name: "FormDialog",
   props:{
-    WidthForm: {
-      type: Number,
-      default: 20
+    size: {
+      type: String,
+      default: '300px'
     }
   },
   data() {
@@ -27,7 +27,7 @@ export default {
     }
   },
   created() {
-    console.log(this.WidthForm)
+    console.log(this.size)
   },
   methods: {
     showConfirm() {
@@ -38,10 +38,10 @@ export default {
     }
   },
   computed:{
-    widthForm(){
+    computedWidthForm(){
       return{
-        "width": `${this.WidthForm}%`
-      }
+        "width": this.size
+      };
     }
   }
 }
@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .fontSettings{
   text-align: center;
-  font-family: Impact;
+  font-family: Impact,serif;
   color: black;
   -webkit-text-stroke: 1px white;
   letter-spacing: 5px;

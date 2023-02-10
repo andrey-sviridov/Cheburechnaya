@@ -8,7 +8,7 @@
       >
         <v-avatar
         >
-          <v-img src="../src/assets/logo.png" />
+          <v-img src="../src/assets/logo.png"/>
         </v-avatar>
         <span style="margin: 0 15px 0 5px">
           Чебуречная на закате
@@ -19,55 +19,113 @@
         >
           <v-divider vertical inset/>
           <v-btn
-          :height="40"
-          :prepend-icon=el.icon
+            :height="40"
+            :prepend-icon=el.icon
           >
-            {{el.name}}
+            {{ el.name }}
           </v-btn>
         </template>
 
-        <v-spacer />
-        <v-btn
-          :height="40"
-          variant="outlined"
-          prepend-icon="mdi-login"
-          @click="this.$refs.confirmation.showConfirm()"
-        >
-          Авторизация
-        </v-btn>
-        <v-btn
-          :height="40"
-          variant="outlined"
-          prepend-icon="mdi-login"
-          @click="this.$refs.formDialog.showConfirm()"
-        >
-          Форма
-        </v-btn>
+        <v-spacer/>
+        <div v-if="!isLogged" class="loginButtons">
+          <v-btn
+            :height="40"
+            variant="outlined"
+            prepend-icon="mdi-login"
+            @click="this.$refs.confirmation.showConfirm()"
+          >
+            Уведомление
+          </v-btn>
+          <v-btn
+            :height="40"
+            variant="outlined"
+            prepend-icon="mdi-login"
+            @click="this.$refs.formDialog.showConfirm()"
+          >
+            Войти
+          </v-btn>
+        </div>
+        <div v-else-if="isLogged" class="loginButtons" style="display: contents;">
+          <v-chip color="purple" variant="elevated">Администратор</v-chip>
+
+
+          <v-menu
+            open-on-hover
+          >
+            <template v-slot:activator="{ props }">
+              <div v-bind="props">
+                <span style="font-family: Arial,serif; vertical-align: middle;">
+              Привет, Андрей!
+          </span>
+                <v-avatar
+                  color="primary"
+                >
+                  A
+                </v-avatar>
+              </div>
+            </template>
+
+            <v-list class="mt-1">
+              <v-list-item class="mt-n2 mb-n1">
+                <span>Свиридов Андрей Алексеевич</span>
+              </v-list-item>
+              <v-divider/>
+              <v-list-item class="mt-1">
+                <v-btn
+                  :height="40"
+                  width="100%"
+                  variant="outlined"
+                  prepend-icon="mdi-cog"
+                  @click="this.isLogged = false"
+                >
+                  Параметры
+                </v-btn>
+              </v-list-item>
+              <v-list-item>
+                <v-btn
+                  :height="40"
+                  width="100%"
+                  variant="outlined"
+                  prepend-icon="mdi-login"
+                  @click="this.isLogged = false"
+                >
+                  Выйти
+                </v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </v-app-bar>
       <transition name="fade">
         <router-view class="router-view"/>
       </transition>
     </v-responsive>
   </v-container>
-  <confirmation-dialog ref="confirmation" />
-  <form-dialog ref="formDialog" :width-form="90">
+
+  <!-- ОКНА -->
+  <confirmation-dialog ref="confirmation"/>
+  <form-dialog ref="formDialog" size="30%">
     <template v-slot:title>
-      Форма регистрации
+      Авторизация
     </template>
-    <template v-slot:body >
-      <v-autocomplete label="Логин"/>
-      <v-autocomplete label="Пароль"/>
+    <template v-slot:body>
+      <v-form ref="loginForm" v-model="fmLoginValidated">
+        <v-text-field label="Логин*" variant="underlined" :rules="checkRules" validate-on="input"/>
+        <v-text-field label="Пароль*" type="password" variant="underlined" :rules="checkRules" validate-on="input"/>
+      </v-form>
     </template>
     <template v-slot:actions>
       <v-btn
-        @click="this.$refs.formDialog.hideConfirm()"
-        variant="flat"
+        @click="this.isLogged = true; this.$refs.formDialog.hideConfirm()"
+        variant="outlined"
         color="success"
+        :disabled="!fmLoginValidated"
       >
-        Зарегистрироваться
+        Авторизоваться
       </v-btn>
       <v-spacer/>
       <v-btn
+        variant="outlined"
         @click="this.$refs.formDialog.hideConfirm()"
       >
         Закрыть
@@ -77,33 +135,56 @@
 </template>
 
 <script>
-  import AlertWindow from "@/components/AlertWindow";
-  import ConfirmationDialog from "@/components/ConfirmationDialog";
-  import FormDialog from "@/components/FormDialog";
-  export default{
-    name: 'main-page',
-    components: {FormDialog, ConfirmationDialog, AlertWindow},
-    data(){
-      return{
-        showWin: false,
-        appBarItems:[
-          {
-            icon: 'mdi-home',
-            name: 'Главная',
-            route: '/'
-          },
-          {
-            icon: 'mdi-text',
-            name: 'Посты',
-            route: '/posts'
-          },
-        ]
+import AlertWindow from "@/components/AlertWindow";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import FormDialog from "@/components/FormDialog";
+import {requiredField} from "@/plugins/rules";
+
+export default {
+  name: 'main-page',
+  components: {FormDialog, ConfirmationDialog, AlertWindow},
+  data() {
+    return {
+      items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
+      isLogged: false,
+      fmLoginValidated: false,
+      showWin: false,
+      appBarItems: [
+        {
+          icon: 'mdi-home',
+          name: 'Главная',
+          route: '/'
+        },
+        {
+          icon: 'mdi-text',
+          name: 'Посты',
+          route: '/posts'
+        },
+      ]
     };
-    },
-    methods:{
-      showWindow(){
-        this.$refs.confirmation.showConfirm(null, {title: 'Тест'})
-      }
+  },
+  methods: {
+    showWindow() {
+      this.$refs.confirmation.showConfirm(null, {title: 'Тест'})
+    }
+  },
+  computed: {
+    checkRules() {
+      return [
+        value => requiredField(value)
+      ]
     }
   }
+}
 </script>
+<style scoped type="text/css">
+.loginButtons > * {
+  margin: 3px;
+  vertical-align: middle;
+}
+</style>
