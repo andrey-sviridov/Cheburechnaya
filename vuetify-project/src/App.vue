@@ -19,8 +19,11 @@ body{
 }
 </style>
 <style scoped>
+/*.background{*/
+/*  background: url("assets/light-background.jpg") no-repeat fixed;*/
+/*  background-size: cover;*/
+/*}*/
 .background{
-  background: url("assets/light-background.jpg") no-repeat fixed;
-  background-size: cover;
+  background-color: aliceblue;
 }
 </style>

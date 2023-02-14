@@ -19,7 +19,7 @@
         >
           <v-divider vertical inset/>
           <v-btn
-            :height="40"
+            :height="47"
             :prepend-icon=el.icon
           >
             {{ el.name }}
@@ -29,16 +29,14 @@
         <v-spacer/>
         <div v-if="!isLogged" class="loginButtons">
           <v-btn
-            :height="40"
-            variant="outlined"
+            :height="47"
             prepend-icon="mdi-login"
             @click="this.$refs.confirmation.showConfirm()"
           >
             Уведомление
           </v-btn>
           <v-btn
-            :height="40"
-            variant="outlined"
+            :height="47"
             prepend-icon="mdi-login"
             @click="this.$refs.formDialog.showConfirm()"
           >
@@ -46,23 +44,23 @@
           </v-btn>
         </div>
         <div v-else-if="isLogged" class="loginButtons" style="display: contents;">
-          <v-chip color="purple" variant="elevated">Администратор</v-chip>
 
-
-          <v-menu
-            open-on-hover
-          >
+          <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
-              <div v-bind="props">
-                <span style="font-family: Arial,serif; vertical-align: middle;">
-              Привет, Андрей!
-          </span>
+
+              <v-btn v-bind="props" :height="47">
+            <span style=" padding-right: 10px">
+                  Привет, Андрей!
+                </span>
                 <v-avatar
                   color="primary"
+                  :size="30"
                 >
                   A
                 </v-avatar>
-              </div>
+              </v-btn>
+
+
             </template>
 
             <v-list class="mt-1">
@@ -146,10 +144,10 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+        {title: 'Click Me'},
+        {title: 'Click Me'},
+        {title: 'Click Me'},
+        {title: 'Click Me 2'},
       ],
       isLogged: false,
       fmLoginValidated: false,
