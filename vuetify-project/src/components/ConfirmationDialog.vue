@@ -5,11 +5,11 @@
     </v-card-title>
     <div style="width: 60%; align-self: center">
       <v-card-text
-        style="padding: 30px 0 30px; "
+        style="padding: 30px 0 30px; color: black"
       >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</v-card-text>
 
     </div>
-    <v-card-actions style="justify-content: center">
+    <v-card-actions style="justify-content: center; color: black">
       <v-btn
         variant="flat"
         color="primary"

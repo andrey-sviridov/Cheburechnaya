@@ -4,7 +4,7 @@
       <v-app-bar
         :elevation="2"
         :height="50"
-        style="background-color: rgba(255,255,255, 0.5)"
+        style="background-color: rgb(248,250,255, 0.5)"
       >
         <v-avatar
         >
@@ -21,6 +21,7 @@
           <v-btn
             :height="47"
             :prepend-icon=el.icon
+            :to="el.route"
           >
             {{ el.name }}
           </v-btn>
@@ -115,8 +116,8 @@
     <template v-slot:actions>
       <v-btn
         @click="this.isLogged = true; this.$refs.formDialog.hideConfirm()"
-        variant="outlined"
-        color="success"
+        variant="flat"
+        color="primary"
         :disabled="!fmLoginValidated"
       >
         Авторизоваться
@@ -143,12 +144,6 @@ export default {
   components: {FormDialog, ConfirmationDialog, AlertWindow},
   data() {
     return {
-      items: [
-        {title: 'Click Me'},
-        {title: 'Click Me'},
-        {title: 'Click Me'},
-        {title: 'Click Me 2'},
-      ],
       isLogged: false,
       fmLoginValidated: false,
       showWin: false,

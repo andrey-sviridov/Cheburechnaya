@@ -9,17 +9,22 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
-import { useRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 import vuetify from './plugins/vuetify'
+import routes from "@/plugins/routes";
 
 const app = createApp(App)
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
+})
 
 registerPlugins(app)
 
 app
   .use(vuetify)
-  .use(useRouter)
+  .use(router)
   .mount('#app')

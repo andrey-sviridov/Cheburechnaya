@@ -1,13 +1,13 @@
 <template>
   <v-app class="background">
     <v-main>
-      <HelloWorld />
+      <AppBar />
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import AppBar from '@/components/AppBar.vue'
 </script>
 <style>
 html{
