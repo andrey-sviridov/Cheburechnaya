@@ -155,7 +155,7 @@ export default {
         },
         {
           icon: 'mdi-text',
-          name: 'Посты',
+          name: 'Лента',
           route: '/posts'
         },
       ]

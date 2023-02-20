@@ -47,7 +47,7 @@ static void ConfigureCorsPolicy(WebApplicationBuilder builder) {
 		opt.AddPolicy("CorsPolicy", policy => {
 			policy.AllowAnyHeader()
 				.AllowAnyMethod()
-				.WithOrigins("http://localhost:8080")
+				.WithOrigins("http://localhost:8080", "http://127.0.0.1:3000")
 				.AllowCredentials();
 		});
 	});
