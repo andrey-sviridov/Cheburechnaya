@@ -27,3 +27,6 @@ body{
   background-color: aliceblue;
 }
 </style>
+<style>
+@import "@/styles/global.scss";
+</style>

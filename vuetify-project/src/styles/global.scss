@@ -1,0 +1,7 @@
+:root{
+  --letter-spacing: 0;
+}
+
+.v-btn{
+  letter-spacing: var(--letter-spacing) !important;
+}

@@ -1,15 +1,17 @@
 <template>
-  <v-dialog v-model="dialog" :style="computedWidthForm" style="text-align: center;" transition="slide-y-reverse-transition" persistent>
-    <v-card-title class="fontSettings" style="position:relative;">
+<v-dialog v-model="dialog" style="text-align: center;" transition="slide-x-transition">
+  <VCard style="padding: 30px; background: linear-gradient(0.75turn, transparent, white, white, transparent); backdrop-filter: blur(1px); box-shadow:0 0 0 5px transparent, 0 0 10px 5px transparent;">
+    <v-card-title class="fontSettings align-self-center" style="position:relative;" :style="computedWidth">
       <slot name="title" />
     </v-card-title>
-    <div style="align-self: center; width: 100%" >
+    <div class="align-self-center" :style="computedWidth" >
       <slot name="body" />
     </div>
-    <v-card-actions style="justify-content: center; color: black">
+    <v-card-actions class="align-self-center" :style="computedWidth">
       <slot name="actions" />
     </v-card-actions>
-  </v-dialog>
+  </VCard>
+</v-dialog>
 </template>
 
 <script>
@@ -41,11 +43,16 @@ export default {
     }
   },
   computed:{
-    computedWidthForm(){
+    computedForm(){
       return{
         "width": this.size,
         "height": this.height
       };
+    },
+    computedWidth(){
+      return{
+        "width": this.size
+      }
     }
   }
 }
@@ -60,8 +67,4 @@ export default {
   letter-spacing: 5px;
   font-size: 40px;
 }
-.v-dialog > *{
-  background: transparent !important;
-}
-
 </style>

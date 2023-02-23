@@ -1,12 +1,13 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="d-flex align-center text-center fill-height">
+  <v-container style="text-align: -webkit-center !important;">
+    <v-responsive class="d-flex align-center fill-height">
       <v-app-bar
         :elevation="2"
         :height="50"
-        style="background-color: rgb(248,250,255, 0.5)"
+        class="bg-transparent"
+        style="backdrop-filter: blur(3px)"
       >
-        <v-avatar
+        <v-avatar class="ma-lg-2"
         >
           <v-img src="../src/assets/logo.png"/>
         </v-avatar>
@@ -46,7 +47,7 @@
         </div>
         <div v-else-if="isLogged" class="loginButtons" style="display: contents;">
 
-          <v-menu open-on-hover>
+          <v-menu open-on-hover >
             <template v-slot:activator="{ props }">
 
               <v-btn v-bind="props" :height="47">
@@ -65,10 +66,6 @@
             </template>
 
             <v-list class="mt-1">
-              <v-list-item class="mt-n2 mb-n1">
-                <span>Свиридов Андрей Алексеевич</span>
-              </v-list-item>
-              <v-divider/>
               <v-list-item class="mt-1">
                 <v-btn
                   :height="40"
@@ -76,6 +73,7 @@
                   variant="outlined"
                   prepend-icon="mdi-cog"
                   @click="this.isLogged = false"
+                  color="primary"
                 >
                   Параметры
                 </v-btn>
@@ -87,6 +85,7 @@
                   variant="outlined"
                   prepend-icon="mdi-login"
                   @click="this.isLogged = false"
+                  color="red"
                 >
                   Выйти
                 </v-btn>
@@ -96,7 +95,7 @@
         </div>
       </v-app-bar>
       <transition name="fade">
-        <router-view class="router-view"/>
+        <router-view class="router-view "/>
       </transition>
     </v-responsive>
   </v-container>
@@ -116,8 +115,8 @@
     <template v-slot:actions>
       <v-btn
         @click="this.isLogged = true; this.$refs.formDialog.hideConfirm()"
-        variant="flat"
-        color="primary"
+        variant="outlined"
+        color="success"
         :disabled="!fmLoginValidated"
       >
         Авторизоваться
@@ -176,8 +175,14 @@ export default {
 }
 </script>
 <style scoped type="text/css">
+@import "@/styles/app-bar.css";
+
 .loginButtons > * {
   margin: 3px;
   vertical-align: middle;
+}
+.fill-height{
+  width: 90%;
+  text-align: -webkit-center;
 }
 </style>
