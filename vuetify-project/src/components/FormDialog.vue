@@ -1,6 +1,6 @@
 <template>
 <v-dialog v-model="dialog" style="text-align: center;" transition="slide-x-transition">
-  <VCard style="padding: 30px; background: linear-gradient(0.75turn, transparent, white, white, transparent); backdrop-filter: blur(1px); box-shadow:0 0 0 5px transparent, 0 0 10px 5px transparent;">
+  <VCard :style="computedHeight" style="padding: 30px; background: linear-gradient(0.75turn, transparent, aliceblue, aliceblue, transparent); backdrop-filter: blur(1px); box-shadow:0 0 0 5px transparent, 0 0 10px 5px transparent;">
     <v-card-title class="fontSettings align-self-center" style="position:relative;" :style="computedWidth">
       <slot name="title" />
     </v-card-title>
@@ -52,6 +52,11 @@ export default {
     computedWidth(){
       return{
         "width": this.size
+      }
+    },
+    computedHeight(){
+      return{
+        "height": this.height
       }
     }
   }

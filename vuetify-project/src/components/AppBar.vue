@@ -102,7 +102,7 @@
 
   <!-- ОКНА -->
   <confirmation-dialog ref="confirmation"/>
-  <form-dialog ref="formDialog" size="30%">
+  <form-dialog ref="formDialog" size="30%" height="50%">
     <template v-slot:title>
       Авторизация
     </template>

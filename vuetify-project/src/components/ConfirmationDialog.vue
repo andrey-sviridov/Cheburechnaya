@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" style="text-align: center; color: white;"  transition="slide-x-reverse-transition" persistent>
-    <VCard style="padding: 30px; background: linear-gradient(0.75turn, transparent, white, white, transparent); backdrop-filter: blur(3px); box-shadow:0 0 0 5px transparent, 0 0 10px 5px transparent;" >
+    <VCard style="padding: 30px; background: linear-gradient(0.75turn, transparent, aliceblue, aliceblue, transparent); backdrop-filter: blur(3px); box-shadow:0 0 0 5px transparent, 0 0 10px 5px transparent;" >
     <v-card-title class="fontSettings" style=" position:relative;">
       Подтверждение действия
     </v-card-title>

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid ">
 <div>
   <v-sheet rounded="lg" style="background-color: transparent;">
     <div class="pa-3">
@@ -20,7 +20,7 @@
   </v-sheet>
 </div>
     <v-divider vertical/>
-    <div>
+    <div style="overflow-y: scroll">
       <v-card v-for="el in posts" :key="el.id" class="ma-5" style="text-align-last: start">
         <v-card-title>
           {{el.title}}
@@ -77,6 +77,69 @@ export default {
           likeCount: 28,
           youLiked: true
         },
+        {
+          id: 4,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 5,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 6,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 7,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 8,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 9,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 10,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 11,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
+        {
+          id: 12,
+          title: 'Заголовок 3',
+          text: 'Текст третьего поста',
+          likeCount: 28,
+          youLiked: true
+        },
       ]
     }
   },
@@ -104,7 +167,8 @@ export default {
   display: grid;
   grid-template-columns: 20% 1px 58% 1px 20%;
   gap: 10px;
-  height: 700px;
+  height: 850px;
+  overflow-x: hidden;
 }
 .switches{
   background: rgba(255,255,255,0.3);
