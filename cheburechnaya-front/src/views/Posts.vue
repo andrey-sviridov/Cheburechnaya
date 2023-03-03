@@ -24,9 +24,9 @@
                                 rounded="lg"
                                 style="background-color: transparent"
                         >
-                            <div class="about ma-1">
+                            <div class="ma-1">
                                 <div v-for="item in items" :key="item.id">
-                                    <v-card class="card-post pa-1">
+                                    <v-card class="pa-1">
                                         <v-row>
                                             <v-card-title>
                                                 {{item.title}}

@@ -49,6 +49,7 @@
 
 <script>
 import ApiService from "@/services/api.service";
+import axios from "axios";
 
 export default {
   name: "Posts",
@@ -148,6 +149,7 @@ export default {
   methods: {
     getList(){
       ApiService.get(`GetPosts`).then((response)=>{
+        console.log(response.data)
         this.posts = response.data
       })
     },

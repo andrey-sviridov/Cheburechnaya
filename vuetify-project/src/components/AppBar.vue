@@ -37,7 +37,6 @@
             <component :is="Component" :key="route.path" />
           </transition>
         </router-view>
-
       </transition>
     </v-responsive>
   </v-container>

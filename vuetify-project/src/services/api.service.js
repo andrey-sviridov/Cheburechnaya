@@ -15,6 +15,7 @@ const ApiService = {
 
     if (AuthService.isLoggedOn()) {
       axios.defaults.headers.common["UserId"] = JSON.parse(localStorage.getItem("authorizedUser"))?.id
+      console.log(axios.defaults.headers.common["UserId"])
     }
   },
   get(resource, config) {
