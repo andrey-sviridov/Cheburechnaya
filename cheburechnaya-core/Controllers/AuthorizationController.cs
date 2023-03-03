@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace cheburechnaya_core.Controllers {
     [ApiController]
@@ -18,7 +19,19 @@ namespace cheburechnaya_core.Controllers {
         [HttpPost]
         public UserDto? Login([FromBody] GetLoginQuery request) {
             using ModelContext context = new ModelContext();
-            var res = context.Users.SingleOrDefault(x=>x.UserName == request.Login && x.Password == request.Password);
+
+            string key = Request.Headers["encryptedKey"];
+            string decryptedLogin = string.Empty;
+            string decryptedPassword = string.Empty;
+            try {
+                var keybytes = Encoding.UTF8.GetBytes(Request.Headers["encryptedKey"]);
+                var decriptedFromJavascript = DecryptStringFromBytes(Convert.FromBase64String(request.Login), keybytes, keybytes);
+
+            } catch (Exception ex) {
+
+            }
+
+            var res = context.Users.SingleOrDefault(x=>x.UserName == decryptedLogin && x.Password == decryptedPassword);
             var model = _mapper.Map<UserDto>(res);
             if (res != null) model.Token = CreateJwtToken(res.UserName).Token;
 
